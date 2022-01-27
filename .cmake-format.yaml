@@ -1,0 +1,78 @@
+markup:
+  first_comment_is_literal: true
+format:
+  disable: false
+  line_width: 120
+  tab_size: 2
+  use_tabchars: false
+  max_subgroups_hwrap: 2
+  max_pargs_hwrap: 6
+  max_rows_cmdline: 2
+  separate_ctrl_name_with_space: false
+  separate_fn_name_with_space: false
+  dangle_parens: false
+  dangle_align: prefix
+  min_prefix_chars: 4
+  max_prefix_chars: 10
+  max_lines_hwrap: 2
+  line_ending: unix
+  command_case: canonical
+  keyword_case: unchanged
+  enable_sort: true
+  autosort: false
+  require_valid_layout: false
+parse:
+  additional_commands:
+    test_compile_option:
+      pargs:
+        nargs: 1+
+        flags:
+          - AUTO_ADD_CO
+      kwargs:
+        LANGS: +
+        FLAGS: +
+        GENEX: 1
+    test_link_option:
+      pargs:
+        nargs: 1+
+        flags:
+          - AUTO_ADD_LO
+          - VERBATIM
+      kwargs:
+        LANGS: +
+        FLAGS: +
+        GENEX: 1
+    mindspore_add_pkg:
+      pargs:
+        nargs: 1
+      kwargs:
+        URL: 1
+        MD5: 1
+        GIT_REPOSITORY: 1
+        GIT_TAG: 1
+        VER: 1
+        EXE: 1
+        DIR: 1
+        HEAD_ONLY: 1
+        CMAKE_PATH: 1
+        RELEASE: 1
+        LIB_PATH: 1
+        CUSTOM_CMAKE: 1
+        CMAKE_OPTION: +
+        LIBS: +
+        PRE_CONFIGURE_COMMAND: +
+        CONFIGURE_COMMAND: +
+        BUILD_OPTION: +
+        INSTALL_INCS: +
+        INSTALL_LIBS: +
+        PATCHES: +
+        SUBMODULES: +
+        SOURCEMODULES: +
+        ONLY_MAKE: +
+        ONLY_MAKE_INCS: +
+        ONLY_MAKE_LIBS: +
+        TARGET_ALIAS: 2
+lint:
+  argument_var_pattern: _?[a-z][a-z0-9_]+
+  local_var_pattern: _?([a-z][a-z0-9_]+|[A-Z][A-Z0-9_]+)
+  macro_pattern: '[0-9a-z_]+'
