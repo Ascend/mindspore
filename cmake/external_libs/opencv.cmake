@@ -1,130 +1,96 @@
 if(MSVC)
-    set(opencv_CXXFLAGS "${CMAKE_CXX_FLAGS}")
-    set(opencv_CFLAGS "${CMAKE_C_FLAGS}")
-    set(opencv_LDFLAGS "${CMAKE_SHARED_LINKER_FLAGS}")
+  set(opencv_CXXFLAGS "${CMAKE_CXX_FLAGS}")
+  set(opencv_CFLAGS "${CMAKE_C_FLAGS}")
+  set(opencv_LDFLAGS "${CMAKE_SHARED_LINKER_FLAGS}")
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    set(opencv_CXXFLAGS "-fstack-protector-all -Wno-uninitialized -Wno-unused-parameter -D_FORTIFY_SOURCE=2 -O2")
-    set(opencv_CFLAGS "-fstack-protector-all -Wno-uninitialized -Wno-unused-parameter -D_FORTIFY_SOURCE=2 -O2")
-    set(opencv_LDFLAGS "-Wl")
+  set(opencv_CXXFLAGS "-fstack-protector-all -Wno-uninitialized -Wno-unused-parameter -D_FORTIFY_SOURCE=2 -O2")
+  set(opencv_CFLAGS "-fstack-protector-all -Wno-uninitialized -Wno-unused-parameter -D_FORTIFY_SOURCE=2 -O2")
+  set(opencv_LDFLAGS "-Wl")
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    set(opencv_CXXFLAGS "-fstack-protector-all -Wno-maybe-uninitialized -Wno-unused-parameter -D_FORTIFY_SOURCE=2 -O2")
-    set(opencv_CFLAGS "-fstack-protector-all -Wno-maybe-uninitialized -Wno-unused-parameter -D_FORTIFY_SOURCE=2 -O2")
-    set(opencv_CXXFLAGS "${opencv_CXXFLAGS} -Wno-attributes -Wno-unknown-pragmas")
-    set(opencv_CXXFLAGS "${opencv_CXXFLAGS} -Wno-unused-value -Wno-implicit-fallthrough")
+  set(opencv_CXXFLAGS "-fstack-protector-all -Wno-maybe-uninitialized -Wno-unused-parameter -D_FORTIFY_SOURCE=2 -O2")
+  set(opencv_CFLAGS "-fstack-protector-all -Wno-maybe-uninitialized -Wno-unused-parameter -D_FORTIFY_SOURCE=2 -O2")
+  set(opencv_CXXFLAGS "${opencv_CXXFLAGS} -Wno-attributes -Wno-unknown-pragmas")
+  set(opencv_CXXFLAGS "${opencv_CXXFLAGS} -Wno-unused-value -Wno-implicit-fallthrough")
 else()
-    set(opencv_CXXFLAGS "-fstack-protector-all -Wno-maybe-uninitialized -Wno-unused-parameter -D_FORTIFY_SOURCE=2")
-    set(opencv_CXXFLAGS "${opencv_CXXFLAGS} -O2")
-    if(NOT ENABLE_GLIBCXX)
-        set(opencv_CXXFLAGS "${opencv_CXXFLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
-    endif()
-    set(opencv_CFLAGS "-fstack-protector-all -Wno-maybe-uninitialized -Wno-unused-parameter -D_FORTIFY_SOURCE=2 -O2")
-    set(opencv_LDFLAGS "-Wl,-z,relro,-z,now,-z,noexecstack -s")
+  set(opencv_CXXFLAGS "-fstack-protector-all -Wno-maybe-uninitialized -Wno-unused-parameter -D_FORTIFY_SOURCE=2")
+  set(opencv_CXXFLAGS "${opencv_CXXFLAGS} -O2")
+  if(NOT ENABLE_GLIBCXX)
+    set(opencv_CXXFLAGS "${opencv_CXXFLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
+  endif()
+  set(opencv_CFLAGS "-fstack-protector-all -Wno-maybe-uninitialized -Wno-unused-parameter -D_FORTIFY_SOURCE=2 -O2")
+  set(opencv_LDFLAGS "-Wl,-z,relro,-z,now,-z,noexecstack -s")
 endif()
 
 if(ENABLE_GITEE)
-    set(REQ_URL "https://gitee.com/mirrors/opencv/repository/archive/4.5.2.tar.gz")
-    set(MD5 "d3141f649ab2d76595fdd8991ee15c55")
+  set(REQ_URL "https://gitee.com/mirrors/opencv/repository/archive/4.5.2.tar.gz")
+  set(MD5 "d3141f649ab2d76595fdd8991ee15c55")
 else()
-    set(REQ_URL "https://github.com/opencv/opencv/archive/4.5.2.tar.gz")
-    set(MD5 "d3141f649ab2d76595fdd8991ee15c55")
+  set(REQ_URL "https://github.com/opencv/opencv/archive/4.5.2.tar.gz")
+  set(MD5 "d3141f649ab2d76595fdd8991ee15c55")
 endif()
 
-if(MSVC)
-    mindspore_add_pkg(opencv
-            VER 4.5.2
-            LIBS opencv_core452.lib opencv_imgcodecs452.lib opencv_imgproc452.lib
-            LIB_PATH x64/*/lib
-            URL ${REQ_URL}
-            MD5 ${MD5}
-            CMAKE_OPTION -DCMAKE_BUILD_TYPE=Release -DWITH_PROTOBUF=OFF -DWITH_WEBP=OFF -DWITH_IPP=OFF
-            -DWITH_ADE=OFF
-            -DBUILD_ZLIB=ON
-            -DBUILD_JPEG=ON
-            -DBUILD_PNG=ON
-            -DBUILD_OPENEXR=OFF
-            -DBUILD_TESTS=OFF
-            -DBUILD_PERF_TESTS=OFF
-            -DBUILD_opencv_apps=OFF
-            -DCMAKE_SKIP_RPATH=TRUE
-            -DBUILD_opencv_python3=OFF
-            -DBUILD_opencv_videoio=OFF
-            -DWITH_FFMPEG=OFF
-            -DWITH_TIFF=ON
-            -DBUILD_TIFF=OFF
-            -DWITH_JASPER=OFF
-            -DBUILD_JASPER=OFF
-            -DCV_TRACE=OFF    # cause memory usage increacing
-            -DTIFF_INCLUDE_DIR=${tiff_INC}
-            -DTIFF_LIBRARY=${tiff_LIB})
-elseif(WIN32)
-    mindspore_add_pkg(opencv
-                VER 4.5.2
-                LIBS libopencv_core452.dll.a libopencv_imgcodecs452.dll.a libopencv_imgproc452.dll.a
-                LIB_PATH x64/mingw/lib
-                URL ${REQ_URL}
-                MD5 ${MD5}
-                CMAKE_OPTION -DCMAKE_BUILD_TYPE=Release -DWITH_PROTOBUF=OFF -DWITH_WEBP=OFF -DWITH_IPP=OFF
-                -DWITH_ADE=OFF
-                -DBUILD_ZLIB=ON
-                -DBUILD_JPEG=ON
-                -DBUILD_PNG=ON
-                -DBUILD_OPENEXR=OFF
-                -DBUILD_TESTS=OFF
-                -DBUILD_PERF_TESTS=OFF
-                -DBUILD_opencv_apps=OFF
-                -DCMAKE_SKIP_RPATH=TRUE
-                -DBUILD_opencv_python3=OFF
-                -DBUILD_opencv_videoio=OFF
-                -DWITH_FFMPEG=OFF
-                -DWITH_TIFF=ON
-                -DBUILD_TIFF=OFF
-                -DWITH_JASPER=OFF
-                -DBUILD_JASPER=OFF
-                -DCV_TRACE=OFF    # cause memory usage increacing
-                -DWITH_LAPACK=OFF
-                -DTIFF_INCLUDE_DIR=${tiff_INC}
-                -DTIFF_LIBRARY=${tiff_LIB})
-else()
-    mindspore_add_pkg(opencv
-                VER 4.5.2
-                LIBS opencv_core opencv_imgcodecs opencv_imgproc
-                URL ${REQ_URL}
-                MD5  ${MD5}
-                CMAKE_OPTION -DCMAKE_BUILD_TYPE=Release -DWITH_PROTOBUF=OFF -DWITH_WEBP=OFF -DWITH_IPP=OFF
-                -DWITH_ADE=OFF
-                -DBUILD_ZLIB=ON
-                -DBUILD_JPEG=ON
-                -DBUILD_PNG=ON
-                -DBUILD_OPENEXR=OFF
-                -DBUILD_TESTS=OFF
-                -DBUILD_PERF_TESTS=OFF
-                -DBUILD_opencv_apps=OFF
-                -DCMAKE_SKIP_RPATH=TRUE
-                -DBUILD_opencv_python3=OFF
-                -DWITH_FFMPEG=OFF
-                -DWITH_TIFF=ON
-                -DBUILD_TIFF=OFF
-                -DWITH_JASPER=OFF
-                -DBUILD_JASPER=OFF
-                -DCV_TRACE=OFF    # cause memory usage increacing
-                -DWITH_LAPACK=OFF
-                -DTIFF_INCLUDE_DIR=${tiff_INC}
-                -DTIFF_LIBRARY=${tiff_LIB})
-endif()
+set(
+  CMAKE_OPTION
+  -DCMAKE_BUILD_TYPE=Release
+  -DWITH_PROTOBUF=OFF
+  -DWITH_WEBP=OFF
+  -DWITH_IPP=OFF
+  -DWITH_ADE=OFF
+  -DBUILD_ZLIB=ON
+  -DBUILD_JPEG=ON
+  -DBUILD_PNG=ON
+  -DBUILD_OPENEXR=OFF
+  -DBUILD_TESTS=OFF
+  -DBUILD_PERF_TESTS=OFF
+  -DBUILD_opencv_apps=OFF
+  -DCMAKE_SKIP_RPATH=TRUE
+  -DBUILD_opencv_python3=OFF
+  -DWITH_FFMPEG=OFF
+  -DWITH_TIFF=ON
+  -DBUILD_TIFF=OFF
+  -DWITH_JASPER=OFF
+  -DBUILD_JASPER=OFF
+  -DCV_TRACE=OFF # cause memory usage increacing
+  -DTIFF_INCLUDE_DIR=${tiff_INC}
+  -DTIFF_LIBRARY=${tiff_LIB}
+)
 
 if(MSVC)
-    include_directories(${opencv_INC})
-    add_library(mindspore::opencv_core ALIAS opencv::opencv_core452.lib)
-    add_library(mindspore::opencv_imgcodecs ALIAS opencv::opencv_imgcodecs452.lib)
-    add_library(mindspore::opencv_imgproc ALIAS opencv::opencv_imgproc452.lib)
+  set(LIBS opencv_core452.lib opencv_imgcodecs452.lib opencv_imgproc452.lib)
+  set(LIB_PATH LIB_PATH x64/*/lib)
+  list(APPEND CMAKE OPTION -DBUILD_opencv_videoio=OFF)
+  set(TARGET_ALIAS TARGET_ALIAS mindspore::opencv_core opencv::opencv_core452.lib)
+  list(APPEND TARGET_ALIAS TARGET_ALIAS mindspore::opencv_imgcodecs opencv::opencv_imgcodecs452.lib)
+  list(APPEND TARGET_ALIAS TARGET_ALIAS mindspore::opencv_imgproc opencv::opencv_imgproc452.lib)
 elseif(WIN32)
-    include_directories(${opencv_INC})
-    add_library(mindspore::opencv_core ALIAS opencv::libopencv_core452.dll.a)
-    add_library(mindspore::opencv_imgcodecs ALIAS opencv::libopencv_imgcodecs452.dll.a)
-    add_library(mindspore::opencv_imgproc ALIAS opencv::libopencv_imgproc452.dll.a)
+  set(LIBS libopencv_core452.dll.a libopencv_imgcodecs452.dll.a libopencv_imgproc452.dll.a)
+  set(LIB_PATH LIB_PATH x64/mingw/lib)
+  list(APPEND CMAKE_OPTION -DBUILD_opencv_videoio=OFF -DWITH_LAPACK=OFF)
+  set(TARGET_ALIAS TARGET_ALIAS mindspore::opencv_core opencv::libopencv_core452.dll.a)
+  list(APPEND TARGET_ALIAS TARGET_ALIAS mindspore::opencv_imgcodecs opencv::libopencv_imgcodecs452.dll.a)
+  list(APPEND TARGET_ALIAS TARGET_ALIAS mindspore::opencv_imgproc opencv::libopencv_imgproc452.dll.a)
 else()
-    include_directories(${opencv_INC}/opencv4)
-    add_library(mindspore::opencv_core ALIAS opencv::opencv_core)
-    add_library(mindspore::opencv_imgcodecs ALIAS opencv::opencv_imgcodecs)
-    add_library(mindspore::opencv_imgproc ALIAS opencv::opencv_imgproc)
+  set(LIBS opencv_core opencv_imgcodecs opencv_imgproc)
+
+  list(APPEND CMAKE_OPTION -DWITH_LAPACK=OFF)
+  set(TARGET_ALIAS TARGET_ALIAS mindspore::opencv_core opencv::opencv_core)
+  list(APPEND TARGET_ALIAS TARGET_ALIAS mindspore::opencv_imgcodecs opencv::opencv_imgcodecs)
+  list(APPEND TARGET_ALIAS TARGET_ALIAS mindspore::opencv_imgproc opencv::opencv_imgproc)
+endif()
+
+mindspore_add_pkg(
+  opencv
+  VER 4.5.2
+  LIBS ${LIBS} ${LIB_PATH}
+  URL ${REQ_URL}
+  MD5 ${MD5}
+  CMAKE_OPTION ${CMAKE_OPTION} ${TARGET_ALIAS}
+)
+
+if(MSVC)
+  include_directories(${opencv_INC})
+elseif(WIN32)
+  include_directories(${opencv_INC})
+else()
+  include_directories(${opencv_INC}/opencv4)
 endif()

@@ -13,7 +13,8 @@ else()
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux" OR APPLE)
-  mindspore_add_pkg(openssl
+  mindspore_add_pkg(
+    openssl
     VER 1.1.1k
     LIBS ssl crypto
     URL ${REQ_URL}
@@ -21,8 +22,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux" OR APPLE)
     CONFIGURE_COMMAND ./config no-zlib no-shared
     PATCHES ${OPENSSL_PATCH_ROOT}/CVE-2021-3711.patch
     PATCHES ${OPENSSL_PATCH_ROOT}/CVE-2021-3712.patch
-  )
+    TARGET_ALIAS mindspore::ssl openssl::ssl
+    TARGET_ALIAS mindspore::crypto openssl::crypto)
   include_directories(${openssl_INC})
-  add_library(mindspore::ssl ALIAS openssl::ssl)
-  add_library(mindspore::crypto ALIAS openssl::crypto)
 endif()
