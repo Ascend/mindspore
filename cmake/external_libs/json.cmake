@@ -8,20 +8,21 @@ else()
 endif()
 
 if(ENABLE_GITEE)
-  set(REQ_URL "https://gitee.com/mirrors/JSON-for-Modern-CPP/repository/archive/v3.7.3.zip")
+  set(REQ_URL "https://gitee.com/mirrors/JSON-for-Modern-CPP/repository/archive/v3.7.3.tar.gz")
   set(MD5 "b758acca4f3e133bacf919e31ca302e3")
   set(INCLUDE "./include")
 else()
-  set(REQ_URL "https://github.com/nlohmann/json/releases/download/v3.7.3/include.zip")
-  set(MD5 "fb96f95cdf609143e998db401ca4f324")
+  set(REQ_URL "https://github.com/nlohmann/json/archive/v3.7.3.tar.gz")
+  set(MD5 "846bbc611ce9ecd7d45d6554679245e1")
   set(INCLUDE "./include")
 endif()
 
 mindspore_add_pkg(
-  nlohmann_json373
+  nlohmann_json
   VER 3.7.3
-  HEAD_ONLY ${INCLUDE}
+  CMAKE_PKG_NO_COMPONENTS
   URL ${REQ_URL}
   MD5 ${MD5}
-  TARGET_ALIAS mindspore::json nlohmann_json373)
-include_directories(${nlohmann_json373_INC})
+  CMAKE_OPTION -DBUILD_TESTING=OFF -DJSON_MultipleHeaders=ON
+  TARGET_ALIAS mindspore::json nlohmann_json::nlohmann_json)
+include_directories(${nlohmann_json_INC})
