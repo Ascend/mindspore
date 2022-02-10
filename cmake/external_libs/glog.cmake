@@ -9,12 +9,10 @@ if(BUILD_LITE)
     set(glog_LDFLAGS "${SECURE_SHARED_LINKER_FLAGS}")
   endif()
   set(glog_patch "")
-  set(glog_lib glog)
 else()
   set(glog_CXXFLAGS "-D_FORTIFY_SOURCE=2 -O2 ${SECURE_CXX_FLAGS} -Dgoogle=mindspore_private")
   set(glog_CFLAGS "-D_FORTIFY_SOURCE=2 -O2")
   set(glog_patch ${CMAKE_SOURCE_DIR}/third_party/patch/glog/glog.patch001)
-  set(glog_lib mindspore_glog)
 endif()
 
 if(NOT ENABLE_GLIBCXX)
@@ -42,10 +40,21 @@ endif()
 mindspore_add_pkg(
   glog
   VER 0.4.0
-  LIBS ${glog_lib}
+  LIBS glog
   URL ${REQ_URL}
   MD5 ${MD5}
   PATCHES ${glog_patch}
   CMAKE_OPTION ${glog_option}
-  TARGET_ALIAS mindspore::glog glog::${glog_lib})
+  TARGET_ALIAS mindspore::glog glog::glog)
 include_directories(${glog_INC})
+
+if(NOT MS_PREFER_SYSTEM_PKGS AND NOT MS_GLOG_PREFER_SYSTEM)
+  set(MS_PATCHED_GLOG_NAME
+      TRUE
+      CACHE INTERNAL "")
+  target_compile_definitions(glog::glog INTERFACE MS_PATCHED_GLOG_NAME)
+else()
+  set(MS_PATCHED_GLOG_NAME
+      FALSE
+      CACHE INTERNAL "")
+endif()
