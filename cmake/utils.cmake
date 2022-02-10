@@ -736,7 +736,8 @@ function(mindspore_add_pkg pkg_name)
       CMAKE_PATH
       RELEASE
       LIB_PATH
-      CUSTOM_CMAKE)
+      CUSTOM_CMAKE
+      NS_NAME)
   set(multiValueArgs
       CMAKE_OPTION
       LIBS
