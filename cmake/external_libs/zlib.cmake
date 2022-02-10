@@ -7,12 +7,14 @@ else()
 endif()
 
 mindspore_add_pkg(
-  zlib
+  ZLIB
   VER 1.2.11
   LIBS z
+  LIBS_CMAKE_NAMES ZLIB
+  GEN_CMAKE_CONFIG
   URL ${REQ_URL}
   MD5 ${MD5}
   CMAKE_OPTION -DCMAKE_BUILD_TYPE:STRING=Release
-  TARGET_ALIAS mindspore::z zlib::z)
+  TARGET_ALIAS mindspore::z ZLIB::ZLIB)
 
 include_directories(${zlib_INC})

@@ -15,13 +15,13 @@ include(${CMAKE_SOURCE_DIR}/cmake/external_libs/eigen.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/external_libs/json.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/dependency_securec.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/external_libs/openssl.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/external_libs/zlib.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/external_libs/protobuf.cmake)
 
 if(MS_BUILD_GRPC)
     # build dependencies of gRPC
     include(${CMAKE_SOURCE_DIR}/cmake/external_libs/absl.cmake)
     include(${CMAKE_SOURCE_DIR}/cmake/external_libs/c-ares.cmake)
-    include(${CMAKE_SOURCE_DIR}/cmake/external_libs/zlib.cmake)
     include(${CMAKE_SOURCE_DIR}/cmake/external_libs/re2.cmake)
     # build gRPC
     include(${CMAKE_SOURCE_DIR}/cmake/external_libs/grpc.cmake)
