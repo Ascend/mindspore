@@ -431,7 +431,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
         mindspore_common)
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
     target_link_libraries(mindspore PUBLIC proto_input mindspore::protobuf
-        mindspore::event mindspore::event_pthreads mindspore::event_openssl mindspore::eigen mindspore::json)
+        mindspore::event_core mindspore::event_extra mindspore::event_pthreads mindspore::event_openssl mindspore::eigen mindspore::json)
     target_link_libraries(mindspore PUBLIC mindspore::event_core ps_cache)
     target_link_libraries(_c_expression PRIVATE -Wl,-all_load mindspore proto_input -Wl,-noall_load mindspore_core
         mindspore_common)
@@ -439,7 +439,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
 else()
     if(ENABLE_CPU AND NOT WIN32)
         target_link_libraries(mindspore PUBLIC proto_input mindspore::protobuf
-            mindspore::event mindspore::event_pthreads mindspore::event_openssl mindspore::eigen mindspore::json)
+            mindspore::event_core mindspore::event_extra mindspore::event_pthreads mindspore::event_openssl mindspore::eigen mindspore::json)
         target_link_libraries(mindspore PUBLIC -Wl,--no-as-needed mindspore::event_core ps_cache)
         if(${ENABLE_IBVERBS} STREQUAL "ON")
             target_link_libraries(mindspore PUBLIC ibverbs rdmacm)

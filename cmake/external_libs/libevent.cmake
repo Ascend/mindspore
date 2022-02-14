@@ -15,16 +15,18 @@ endif()
 message("libevent using openssl stub dir: " ${openssl_ROOT})
 
 mindspore_add_pkg(
-  libevent
+  Libevent
+  NS_NAME libevent
   VER 2.1.12
-  LIBS event event_pthreads event_core event_openssl
+  LIBS event_pthreads event_core event_extra event_openssl
+  LIBS_CMAKE_NAMES pthreads core extra openssl
   URL ${REQ_URL}
   MD5 ${MD5}
   PATCHES ${CMAKE_SOURCE_DIR}/third_party/patch/libevent/libevent.patch001
   CMAKE_OPTION -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_TESTING=OFF -DOPENSSL_ROOT_DIR:PATH=${openssl_ROOT}
-  TARGET_ALIAS mindspore::event libevent::event
-  TARGET_ALIAS mindspore::event_pthreads libevent::event_pthreads
-  TARGET_ALIAS mindspore::event_core libevent::event_core
-  TARGET_ALIAS mindspore::event_openssl libevent::event_openssl)
+  TARGET_ALIAS mindspore::event_extra libevent::extra
+  TARGET_ALIAS mindspore::event_pthreads libevent::pthreads
+  TARGET_ALIAS mindspore::event_core libevent::core
+  TARGET_ALIAS mindspore::event_openssl libevent::openssl)
 
 include_directories(${libevent_INC})
