@@ -19,6 +19,7 @@ mindspore_add_pkg(
   LIBS tinyxml2
   URL ${REQ_URL}
   CMAKE_OPTION -DCMAKE_BUILD_TYPE=Release
+  CMAKE_PKG_NO_COMPONENTS
   MD5 ${MD5}
   TARGET_ALIAS mindspore::tinyxml2 tinyxml2::tinyxml2)
 include_directories(${tinyxml2_INC})
