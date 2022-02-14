@@ -33,23 +33,25 @@ else()
   endif()
 
   mindspore_add_pkg(
-    icu4c
+    ICU
     VER 67.1
     LIBS ${LIB_ICU_COMMON} ${LIB_ICU_DATA} ${LIB_ICU_I18N}
+    LIBS_CMAKE_NAMES uc data i18n
     URL ${REQ_URL}
     MD5 ${MD5}
     PATCHES ${PATCHES}
     CONFIGURE_COMMAND ${CONFIGURE_COMMAND}
-    TARGET_ALIAS mindspore::icuuc icu4c::${LIB_ICU_COMMON}
-    TARGET_ALIAS mindspore::icudata icu4c::${LIB_ICU_DATA}
-    TARGET_ALIAS mindspore::icui18n icu4c::${LIB_ICU_I18N})
+    GEN_CMAKE_CONFIG
+    TARGET_ALIAS mindspore::icuuc ICU::uc
+    TARGET_ALIAS mindspore::icudata ICU::data
+    TARGET_ALIAS mindspore::icui18n ICU::i18n)
 
   include_directories(${icu4c_INC})
-  if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+  if(CMAKE_SYSTEM_NAME MATCHES "Darwin" AND NOT MS_ICU_PREFER_SYSTEM)
     include(${CMAKE_SOURCE_DIR}/cmake/change_rpath.cmake)
-    changerpath($<TARGET_FILE:icu4c::${LIB_ICU_COMMON}> ${LIB_ICU_COMMON} "libicuuc;libicudata")
-    changerpath($<TARGET_FILE:icu4c::${LIB_ICU_DATA}> ${LIB_ICU_DATA} "libicudata")
-    changerpath($<TARGET_FILE:icu4c::${LIB_ICU_I18N}> ${LIB_ICU_I18N} "libicuuc;libicudata;libicui18n")
+    changerpath($<TARGET_FILE:ICU::uc> ${LIB_ICU_COMMON} "libicuuc;libicudata")
+    changerpath($<TARGET_FILE:ICU::data> ${LIB_ICU_DATA} "libicudata")
+    changerpath($<TARGET_FILE:ICU::i18n> ${LIB_ICU_I18N} "libicuuc;libicudata;libicui18n")
   endif()
   add_definitions(-DENABLE_ICU4C)
 endif()
