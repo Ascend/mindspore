@@ -1,0 +1,23 @@
+diff -Npur re2-2019-12-01/CMakeLists.txt re2-src/CMakeLists.txt
+--- re2-2019-12-01/CMakeLists.txt	2019-11-25 12:22:49.000000000 +0100
++++ re2-src/CMakeLists.txt	2022-03-15 11:22:23.304014613 +0100
+@@ -9,7 +9,7 @@ if(POLICY CMP0048)
+   cmake_policy(SET CMP0048 NEW)
+ endif()
+
+-project(RE2 CXX)
++project(RE2 VERSION 20191201 LANGUAGES CXX)
+ include(CTest)
+ include(GNUInstallDirs)
+
+@@ -156,3 +156,10 @@ install(TARGETS re2 EXPORT re2Config
+         INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+ install(EXPORT re2Config
+         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/re2 NAMESPACE re2::)
++
++include(CMakePackageConfigHelpers)
++write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/re2ConfigVersion.cmake
++                                 COMPATIBILITY SameMajorVersion)
++
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/re2ConfigVersion.cmake
++        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/re2)
