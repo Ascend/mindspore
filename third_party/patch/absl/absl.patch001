@@ -1,0 +1,24 @@
+diff -NpurbwE absl-src/CMakeLists.txt absl-patched/CMakeLists.txt
+--- absl-src/CMakeLists.txt	2022-02-24 18:28:12.221844531 +0100
++++ absl-patched/CMakeLists.txt	2022-02-24 18:28:01.484836200 +0100
+@@ -41,7 +41,7 @@ if (POLICY CMP0077)
+   cmake_policy(SET CMP0077 NEW)
+ endif (POLICY CMP0077)
+ 
+-project(absl CXX)
++project(absl LANGUAGES CXX VERSION 20200923.3)
+ 
+ # Output directory is correct by default for most build setups. However, when
+ # building Abseil as a DLL, it is important to have the DLL in the same
+diff -NpurbwE absl-src/absl/debugging/failure_signal_handler.cc absl-patched/absl/debugging/failure_signal_handler.cc
+--- absl-src/absl/debugging/failure_signal_handler.cc	2021-01-19 19:49:15.000000000 +0100
++++ absl-patched/absl/debugging/failure_signal_handler.cc	2022-02-24 22:27:03.089861542 +0100
+@@ -135,7 +135,7 @@ static bool SetupAlternateStackOnce() {
+ #else
+   const size_t page_mask = sysconf(_SC_PAGESIZE) - 1;
+ #endif
+-  size_t stack_size = (std::max(SIGSTKSZ, 65536) + page_mask) & ~page_mask;
++  size_t stack_size = (std::max(SIGSTKSZ, 65536L) + page_mask) & ~page_mask;
+ #if defined(ABSL_HAVE_ADDRESS_SANITIZER) || \
+     defined(ABSL_HAVE_MEMORY_SANITIZER) || defined(ABSL_HAVE_THREAD_SANITIZER)
+   // Account for sanitizer instrumentation requiring additional stack space.
