@@ -46,13 +46,14 @@ if(BUILD_LITE)
 endif()
 
 mindspore_add_pkg(
-  jpeg_turbo
+  TurboJPEG
   VER 2.0.4
-  LIBS jpeg turbojpeg
+  LIBS JPEG TurboJPEG
   URL ${REQ_URL}
   MD5 ${MD5}
+  GEN_CMAKE_CONFIG
   CMAKE_OPTION ${CMAKE_OPTION}
   PATCHES ${JPEG_TURBO_PATCHE}
-  TARGET_ALIAS mindspore::jpeg_turbo jpeg_turbo::jpeg
-  TARGET_ALIAS mindspore::turbojpeg jpeg_turbo::turbojpeg)
+  TARGET_ALIAS mindspore::jpeg_turbo TurboJPEG::JPEG
+  TARGET_ALIAS mindspore::turbojpeg TurboJPEG::TurboJPEG)
 include_directories(${jpeg_turbo_INC})
