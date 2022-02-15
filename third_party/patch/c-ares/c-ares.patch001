@@ -1,0 +1,24 @@
+diff -Npur c-ares/CMakeLists.txt c-ares-src/CMakeLists.txt
+--- c-ares/CMakeLists.txt	2022-03-15 12:46:40.460810309 +0100
++++ c-ares-src/CMakeLists.txt	2022-03-15 12:54:35.585938578 +0100
+@@ -613,6 +613,10 @@ ENDIF ()
+ IF (CARES_INSTALL)
+ 	SET (CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
+ 	INCLUDE (CMakePackageConfigHelpers)
++        set(_tmp_static ${CARES_STATIC})
++        set(CARES_STATIC ${CARES_STATIC} AND NOT TARGET c-ares::cares_static)
++        set(_tmp_shared ${CARES_SHARED})
++        set(CARES_SHARED ${CARES_SHARED} AND NOT TARGET c-ares::cares_shared)
+ 	CONFIGURE_PACKAGE_CONFIG_FILE (${PROJECT_NAME}-config.cmake.in ${PROJECT_NAME}-config.cmake
+ 		INSTALL_DESTINATION ${CMAKECONFIG_INSTALL_DIR}
+ 		PATH_VARS CMAKE_INSTALL_INCLUDEDIR
+@@ -623,6 +627,9 @@ IF (CARES_INSTALL)
+ 	INSTALL (EXPORT ${PROJECT_NAME}-targets COMPONENT Devel DESTINATION ${CMAKECONFIG_INSTALL_DIR} NAMESPACE ${PROJECT_NAME}::)
+ 	INSTALL (FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake" "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake" COMPONENT Devel DESTINATION ${CMAKECONFIG_INSTALL_DIR})
+ 
++        set(CARES_STATIC ${_tmp_static})
++        set(CARES_SHARED ${_tmp_shared})
++
+ 	# pkgconfig support
+ 	IF (NOT CARES_SHARED)
+ 		SET (CPPFLAG_CARES_STATICLIB "-DCARES_STATICLIB")
