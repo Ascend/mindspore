@@ -19,11 +19,17 @@ else()
   list(APPEND CMAKE_OPTION -DSPM_USE_BUILTIN_PROTOBUF=OFF)
   if(ENABLE_GLIBCXX)
     set(PATCHES PATCHES ${CMAKE_SOURCE_DIR}/third_party/patch/sentencepiece/sentencepiece.patch001_cpu)
-    list(APPEND CMAKE_OPTION -DPROTOBUF_INC=${protobuf_INC} -DCMAKE_CXX_STANDARD=11)
+    list(APPEND CMAKE_OPTION -DPROTOBUF_INC=${Protobuf_INC} -DCMAKE_CXX_STANDARD=11)
   else()
     set(PATCHES PATCHES ${TOP_DIR}/third_party/patch/sentencepiece/sentencepiece.patch001)
-    list(APPEND CMAKE_OPTION -DPROTOBUF_INC=${protobuf_INC})
+    list(APPEND CMAKE_OPTION -DPROTOBUF_INC=${Protobuf_INC})
   endif()
+endif()
+
+if(NOT MS_PREFER_SYSTEM_PKGS AND NOT MS_PROTOBUF_PREFER_SYSTEM)
+  list(APPEND CMAKE_OPTION -DCMAKE_PREFIX_PATH=${Protobuf_ROOT})
+else()
+  # We rely on system discovery anyway so should work when building sentencepiece
 endif()
 
 mindspore_add_pkg(
@@ -32,6 +38,7 @@ mindspore_add_pkg(
   LIBS sentencepiece sentencepiece_train
   URL ${REQ_URL}
   CMAKE_OPTION ${CMAKE_OPTION}
+  GEN_CMAKE_CONFIG
   MD5 ${MD5} ${PATCHES}
   TARGET_ALIAS mindspore::sentencepiece sentencepiece::sentencepiece
   TARGET_ALIAS mindspore::sentencepiece_train sentencepiece::sentencepiece_train)

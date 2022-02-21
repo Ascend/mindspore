@@ -45,15 +45,19 @@ else()
 endif()
 
 mindspore_add_pkg(
-  protobuf
+  Protobuf
   VER 3.13.0
+  NS_NAME protobuf
   LIBS protobuf
+  LIBS_CMAKE_NAMES libprotobuf
+  FORCE_CONFIG_SEARCH
   EXE protoc
   URL ${REQ_URL}
   MD5 ${MD5}
   CMAKE_PATH cmake/
   CMAKE_OPTION -Dprotobuf_BUILD_TESTS=OFF -Dprotobuf_BUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release
-  TARGET_ALIAS mindspore::protobuf protobuf::protobuf)
+               -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+  TARGET_ALIAS mindspore::protobuf protobuf::libprotobuf)
 
 include_directories(${protobuf_INC})
 set(CMAKE_CXX_FLAGS ${_ms_tmp_CMAKE_CXX_FLAGS})
