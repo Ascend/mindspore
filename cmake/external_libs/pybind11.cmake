@@ -41,7 +41,4 @@ mindspore_add_pkg(
   MD5 ${MD5}
   CMAKE_OPTION -DPYBIND11_TEST=OFF -DPYBIND11_LTO_CXX_FLAGS=FALSE
   TARGET_ALIAS mindspore::pybind11_module pybind11::module)
-
 include_directories(${pybind11_INC})
-find_package(pybind11 REQUIRED)
-set_property(TARGET pybind11::module PROPERTY IMPORTED_GLOBAL TRUE)
