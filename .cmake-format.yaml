@@ -45,6 +45,12 @@ parse:
     mindspore_add_pkg:
       pargs:
         nargs: 1
+        flags:
+          - FORCE_EXACT_VERSION
+          - CMAKE_PKG_NO_COMPONENTS
+          - GEN_CMAKE_CONFIG
+          - FORCE_CONFIG_SEARCH
+          - BUILD_OPTION_PASS_PREFIX
       kwargs:
         URL: 1
         MD5: 1
@@ -58,8 +64,10 @@ parse:
         RELEASE: 1
         LIB_PATH: 1
         CUSTOM_CMAKE: 1
+        NS_NAME: 1
         CMAKE_OPTION: +
         LIBS: +
+        LIBS_CMAKE_NAMES: +
         PRE_CONFIGURE_COMMAND: +
         CONFIGURE_COMMAND: +
         BUILD_OPTION: +
