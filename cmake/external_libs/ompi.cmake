@@ -8,13 +8,13 @@ endif()
 
 set(ompi_CXXFLAGS "-D_FORTIFY_SOURCE=2 -O2")
 mindspore_add_pkg(
-  ompi
-  VER 4.0.3
+  MPI
+  VER 3.0 # NB: in the case of MPI, this is the MPI standard version, not the actual library version
   LIBS mpi
+  LIBS_CMAKE_NAMES C
   URL ${REQ_URL}
   MD5 ${MD5}
   PRE_CONFIGURE_COMMAND ./autogen.pl
   CONFIGURE_COMMAND ./configure
-  TARGET_ALIAS mindspore::ompi ompi::mpi
-)
+  TARGET_ALIAS mindspore::ompi MPI::MPI_C)
 include_directories(${ompi_INC})
