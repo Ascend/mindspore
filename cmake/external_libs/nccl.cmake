@@ -9,13 +9,12 @@ endif()
 set(nccl_CFLAGS "-D_FORTIFY_SOURCE=2 -O2")
 mindspore_add_pkg(
   nccl
-  VER 2.7.6-1
+  VER 2.7.6
   LIBS nccl
   URL ${REQ_URL}
   MD5 ${MD5}
-  BUILD_OPTION src.build
-  INSTALL_INCS build/include/*
-  INSTALL_LIBS build/lib/*
-  TARGET_ALIAS mindspore::nccl nccl::nccl
-)
+  BUILD_OPTION src.install
+  BUILD_OPTION_PASS_PREFIX
+  GEN_CMAKE_CONFIG
+  TARGET_ALIAS mindspore::nccl nccl::nccl)
 include_directories(${nccl_INC})
