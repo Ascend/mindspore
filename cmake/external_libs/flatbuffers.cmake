@@ -30,15 +30,23 @@ else()
                    -DFLATBUFFERS_BUILD_TESTS=OFF -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_BUILD_TYPE=Release)
 endif()
 
+if(MS_PREFER_SYSTEM_PKGS OR MS_FLATBUFFERS_PREFER_SYSTEM)
+  # Most Linux distributions are likely to ship at least the shared library
+  set(_flatbuffer_lib_name flatbuffers_shared)
+else()
+  set(_flatbuffer_lib_name flatbuffers)
+endif()
+
 mindspore_add_pkg(
-  flatbuffers
+  Flatbuffers
   VER 2.0.0
   LIBS flatbuffers
+  LIBS_CMAKE_NAMES ${_flatbuffer_lib_name}
   EXE flatc
   URL ${REQ_URL}
   MD5 ${MD5}
   CMAKE_OPTION ${CMAKE_OPTION}
-  TARGET_ALIAS mindspore::flatbuffers flatbuffers::flatbuffers
+  TARGET_ALIAS mindspore::flatbuffers flatbuffers::${_flatbuffer_lib_name}
   TARGET_ALIAS mindspore::flatc flatbuffers::flatc)
 
 include_directories(${flatbuffers_INC})
