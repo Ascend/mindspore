@@ -16,29 +16,50 @@ if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(grpc_LDFLAGS "-Wl,-z,relro,-z,now,-z,noexecstack")
 endif()
 
-if(EXISTS ${protobuf_ROOT}/lib64)
-  set(_FINDPACKAGE_PROTOBUF_CONFIG_DIR "${protobuf_ROOT}/lib64/cmake/protobuf")
-else()
-  set(_FINDPACKAGE_PROTOBUF_CONFIG_DIR "${protobuf_ROOT}/lib/cmake/protobuf")
-endif()
-message("grpc using Protobuf_DIR : " ${_FINDPACKAGE_PROTOBUF_CONFIG_DIR})
+file(GLOB _dirs "${_MS_LIB_CACHE}/*")
+list(PREPEND CMAKE_PREFIX_PATH ${_dirs})
 
-if(EXISTS ${absl_ROOT}/lib64)
-  set(_FINDPACKAGE_ABSL_CONFIG_DIR "${absl_ROOT}/lib64/cmake/absl")
+if(NOT MS_PREFER_SYSTEM_PKGS AND NOT MS_PROTOBUF_PREFER_SYSTEM)
+  if(NOT protobuf_DIR)
+    find_package(protobuf CONFIG QUIET)
+  endif()
+  set(_FINDPACKAGE_PROTOBUF_CONFIG_DIR "-DProtobuf_DIR:PATH=${protobuf_DIR}")
+  message("grpc using Protobuf_DIR : " ${_FINDPACKAGE_PROTOBUF_CONFIG_DIR})
 else()
-  set(_FINDPACKAGE_ABSL_CONFIG_DIR "${absl_ROOT}/lib/cmake/absl")
+  # We rely on system discovery anyway so should work when building grpc
 endif()
+
+if(NOT absl_DIR)
+  find_package(absl CONFIG QUIET)
+endif()
+set(_FINDPACKAGE_ABSL_CONFIG_DIR "-Dabsl_DIR:PATH=${absl_DIR}")
 message("grpc using absl_DIR : " ${_FINDPACKAGE_ABSL_CONFIG_DIR})
 
-if(EXISTS ${re2_ROOT}/lib64)
-  set(_FINDPACKAGE_RE2_CONFIG_DIR "${re2_ROOT}/lib64/cmake/re2")
+if(NOT MS_PREFER_SYSTEM_PKGS AND NOT MS_RE2_PREFER_SYSTEM)
+  if(NOT re2_DIR)
+    find_package(re2 CONFIG QUIET)
+  endif()
+  set(_FINDPACKAGE_RE2_CONFIG_DIR "-Dre2_DIR:PATH=${re2_DIR}")
+  message("grpc using re2_DIR : " ${_FINDPACKAGE_RE2_CONFIG_DIR})
 else()
-  set(_FINDPACKAGE_RE2_CONFIG_DIR "${re2_ROOT}/lib/cmake/re2")
+  # We rely on system discovery anyway so should work when building grpc
 endif()
-message("grpc using re2_DIR : " ${_FINDPACKAGE_RE2_CONFIG_DIR})
 
-if(EXISTS ${openssl_ROOT})
-  set(_CMAKE_ARGS_OPENSSL_ROOT_DIR "-DOPENSSL_ROOT_DIR:PATH=${openssl_ROOT}")
+list(POP_FRONT CMAKE_PREFIX_PATH)
+
+if(NOT MS_PREFER_SYSTEM_PKGS AND NOT MS_OPENSSL_PREFER_SYSTEM)
+  foreach(_dir ${_dirs})
+    if(_dir MATCHES ".*OpenSSL.*")
+      set(OpenSSL_ROOT ${_dir})
+      break()
+    endif()
+  endforeach()
+  message(STATUS "OpenSSL_ROOT = ${OpenSSL_ROOT}")
+  if(EXISTS ${OpenSSL_ROOT})
+    set(_CMAKE_ARGS_OPENSSL_ROOT_DIR "-DOPENSSL_ROOT_DIR:PATH=${OpenSSL_ROOT}")
+  endif()
+else()
+  # We rely on system discovery anyway so should work when building grpc
 endif()
 
 if(ENABLE_GITEE)
@@ -50,9 +71,10 @@ else()
 endif()
 
 mindspore_add_pkg(
-  grpc
+  gRPC
   VER 1.36.1
   LIBS mindspore_grpc++ mindspore_grpc mindspore_gpr mindspore_upb mindspore_address_sorting
+  LIBS_CMAKE_NAMES grpc++ grpc gpr upb address_sorting
   EXE grpc_cpp_plugin
   URL ${REQ_URL}
   MD5 ${MD5}
@@ -64,24 +86,20 @@ mindspore_add_pkg(
     -DgRPC_BUILD_TESTS:BOOL=OFF
     -DgRPC_PROTOBUF_PROVIDER:STRING=package
     -DgRPC_PROTOBUF_PACKAGE_TYPE:STRING=CONFIG
-    -DProtobuf_DIR:PATH=${_FINDPACKAGE_PROTOBUF_CONFIG_DIR}
+    ${_FINDPACKAGE_PROTOBUF_CONFIG_DIR}
     -DgRPC_ZLIB_PROVIDER:STRING=package
     -DZLIB_ROOT:PATH=${zlib_ROOT}
     -DgRPC_ABSL_PROVIDER:STRING=package
-    -Dabsl_DIR:PATH=${_FINDPACKAGE_ABSL_CONFIG_DIR}
+    ${_FINDPACKAGE_ABSL_CONFIG_DIR}
     -DgRPC_CARES_PROVIDER:STRING=package
     -Dc-ares_DIR:PATH=${c-ares_ROOT}/lib/cmake/c-ares
     -DgRPC_SSL_PROVIDER:STRING=package
     ${_CMAKE_ARGS_OPENSSL_ROOT_DIR}
     -DgRPC_RE2_PROVIDER:STRING=package
-    -Dre2_DIR:PATH=${_FINDPACKAGE_RE2_CONFIG_DIR}
-  TARGET_ALIAS mindspore::grpc++ grpc::mindspore_grpc++)
+    ${_FINDPACKAGE_RE2_CONFIG_DIR}
+  TARGET_ALIAS mindspore::grpc++ gRPC::grpc++)
 
 include_directories(${grpc_INC})
-
-# link other grpc libs
-target_link_libraries(grpc::mindspore_grpc++ INTERFACE grpc::mindspore_grpc grpc::mindspore_gpr grpc::mindspore_upb
-                                                       grpc::mindspore_address_sorting)
 
 # modify mindspore macro define
 add_compile_definitions(grpc=mindspore_grpc)
@@ -115,8 +133,8 @@ function(ms_grpc_generate c_var h_var)
       COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/proto"
       COMMAND protobuf::protoc --version
       COMMAND protobuf::protoc -I${file_dir} --cpp_out=${CMAKE_BINARY_DIR}/proto --grpc_out=${CMAKE_BINARY_DIR}/proto
-              --plugin=protoc-gen-grpc=$<TARGET_FILE:grpc::grpc_cpp_plugin> ${abs_file}
-      DEPENDS protobuf::protoc grpc::grpc_cpp_plugin ${abs_file}
+              --plugin=protoc-gen-grpc=$<TARGET_FILE:gRPC::grpc_cpp_plugin> ${abs_file}
+      DEPENDS protobuf::protoc gRPC::grpc_cpp_plugin ${abs_file}
       COMMENT "Running C++ gRPC compiler on ${file}"
       VERBATIM)
   endforeach()

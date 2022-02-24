@@ -19,12 +19,29 @@ include(${CMAKE_SOURCE_DIR}/cmake/external_libs/zlib.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/external_libs/protobuf.cmake)
 
 if(MS_BUILD_GRPC)
-    # build dependencies of gRPC
-    include(${CMAKE_SOURCE_DIR}/cmake/external_libs/absl.cmake)
-    include(${CMAKE_SOURCE_DIR}/cmake/external_libs/c-ares.cmake)
-    include(${CMAKE_SOURCE_DIR}/cmake/external_libs/re2.cmake)
+    if(NOT MS_PREFER_SYSTEM_PKGS AND NOT MS_GRPC_PREFER_SYSTEM)
+        # build dependencies of gRPC
+        if(NOT MS_PREFER_SYSTEM_PKGS AND NOT MS_ABSL_PREFER_SYSTEM)
+            include(${CMAKE_SOURCE_DIR}/cmake/external_libs/absl.cmake)
+        endif()
+        if(NOT MS_PREFER_SYSTEM_PKGS AND NOT MS_C-ARES_PREFER_SYSTEM)
+            include(${CMAKE_SOURCE_DIR}/cmake/external_libs/c-ares.cmake)
+        endif()
+        if(NOT MS_PREFER_SYSTEM_PKGS AND NOT MS_RE2_PREFER_SYSTEM)
+            include(${CMAKE_SOURCE_DIR}/cmake/external_libs/re2.cmake)
+        endif()
+    endif()
     # build gRPC
     include(${CMAKE_SOURCE_DIR}/cmake/external_libs/grpc.cmake)
+
+    if(MS_PREFER_SYSTEM_PKGS OR MS_GRPC_PREFER_SYSTEM)
+        foreach(_lib strings throw_delegate raw_logging_internal int128 bad_optional_access)
+            if(NOT TARGET ${_lib})
+                add_library(mindspore::absl_${_lib} ALIAS absl::${_lib})
+            endif()
+        endforeach()
+    endif()
+
     # build event
     include(${CMAKE_SOURCE_DIR}/cmake/external_libs/libevent.cmake)
 endif()
