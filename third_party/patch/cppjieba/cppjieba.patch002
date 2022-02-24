@@ -1,0 +1,122 @@
+diff -Npur cppjieba-src/CMakeLists.txt cppjieba-patched/CMakeLists.txt
+--- cppjieba-src/CMakeLists.txt	2020-03-11 02:30:52.000000000 +0100
++++ cppjieba-patched/CMakeLists.txt	2022-02-24 18:00:54.143057790 +0100
+@@ -1,28 +1,84 @@
+-PROJECT(CPPJIEBA)
++cmake_minimum_required(VERSION 3.0)
+
+-CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
+-
+-INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/deps
+-  ${PROJECT_SOURCE_DIR}/include)
+-
+-if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+-    set (CMAKE_INSTALL_PREFIX "/usr/local/cppjieba" CACHE PATH "default install path" FORCE )
++project(
++  cppjieba
++  LANGUAGES CXX
++  VERSION 5.0.3)
++
++if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
++  set(CMAKE_INSTALL_PREFIX
++      "/usr/local/cppjieba"
++      CACHE PATH "default install path" FORCE)
+ endif()
+
+-ADD_DEFINITIONS(-O3 -Wall -g)
+-IF(APPLE) # mac os
+-    ADD_DEFINITIONS(-std=c++0x)
++if(NOT CMAKE_BUILD_TYPE)
++  set(CMAKE_BUILD_TYPE "Release")
+ endif()
+
+-# cmake .. -DENC=GBK
+-# IF (DEFINED ENC)
+-#     ADD_DEFINITIONS(-DCPPJIEBA_${ENC})
+-# ENDIF()
+-
+-ADD_SUBDIRECTORY(deps)
+-ADD_SUBDIRECTORY(test)
+-
+-ENABLE_TESTING()
+-ADD_TEST(NAME ./test/test.run COMMAND ./test/test.run)
+-ADD_TEST(NAME ./load_test COMMAND ./load_test)
+-ADD_TEST(NAME ./demo COMMAND ./demo)
++include(GNUInstallDirs)
++include(CMakePackageConfigHelpers)
++
++if(NOT INCLUDE_INSTALL_DIR)
++  set(INCLUDE_INSTALL_DIR
++      "${CMAKE_INSTALL_INCLUDEDIR}"
++      CACHE PATH "The directory relative to CMAKE_PREFIX_PATH where cppjieba header files are installed")
++endif()
++set(CMAKEPACKAGE_INSTALL_DIR
++    "${CMAKE_INSTALL_DATADIR}/cppjieba/cmake"
++    CACHE PATH "The directory relative to CMAKE_PREFIX_PATH where cppjiebaConfig.cmake is installed")
++
++set(CPPJIEBA_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/${INCLUDE_INSTALL_DIR}")
++set(CPPJIEBA_ROOT_DIR ${CMAKE_INSTALL_PREFIX})
++
++add_library(cppjieba INTERFACE)
++target_include_directories(cppjieba INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
++                                              $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/deps>
++                                              $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>)
++target_compile_features(cppjieba INTERFACE cxx_std_11)
++
++# ==============================================================================
++
++configure_package_config_file(
++  cppjiebaConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/cppjiebaConfig.cmake
++  INSTALL_DESTINATION ${LIB_INSTALL_DIR}/cppjieba/cmake
++  PATH_VARS CPPJIEBA_INCLUDE_DIR CPPJIEBA_ROOT_DIR
++  INSTALL_DESTINATION ${CMAKEPACKAGE_INSTALL_DIR})
++write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/cppjiebaConfigVersion.cmake COMPATIBILITY SameMajorVersion
++                                                                                                       ARCH_INDEPENDENT)
++install(
++  DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/cppjieba
++  DESTINATION ${INCLUDE_INSTALL_DIR}
++  COMPONENT Devel)
++install(
++  DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/deps/limonp
++  DESTINATION ${INCLUDE_INSTALL_DIR}
++  COMPONENT Devel)
++install(TARGETS cppjieba EXPORT cppjiebaTargets)
++install(
++  EXPORT cppjiebaTargets
++  NAMESPACE cppjieba::
++  DESTINATION ${CMAKEPACKAGE_INSTALL_DIR})
++
++export(
++  TARGETS cppjieba
++  NAMESPACE cppjieba::
++  FILE cppjiebaTargets.cmake)
++export(PACKAGE cppjieba)
++
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cppjiebaConfig.cmake ${CMAKE_CURRENT_BINARY_DIR}/cppjiebaConfigVersion.cmake
++        DESTINATION ${CMAKEPACKAGE_INSTALL_DIR})
++
++# ==============================================================================
++
++if(BUILD_TESTING)
++  include_directories(${PROJECT_SOURCE_DIR}/deps)
++
++  add_subdirectory(deps)
++  add_subdirectory(test)
++
++  include(CTest)
++  enable_testing()
++  add_test(NAME ./test/test.run COMMAND ./test/test.run)
++  add_test(NAME ./load_test COMMAND ./load_test)
++  add_test(NAME ./demo COMMAND ./demo)
++endif()
+diff -Npur cppjieba-src/cppjiebaConfig.cmake.in cppjieba-patched/cppjiebaConfig.cmake.in
+--- cppjieba-src/cppjiebaConfig.cmake.in	1970-01-01 01:00:00.000000000 +0100
++++ cppjieba-patched/cppjiebaConfig.cmake.in	2022-02-24 17:51:36.611995787 +0100
+@@ -0,0 +1,7 @@
++# This file exports the cppjieba::cppjieba CMake target which should be passed to the # target_link_libraries command.
++
++@PACKAGE_INIT@
++
++if(NOT TARGET cppjieba::cppjieba)
++  include("${CMAKE_CURRENT_LIST_DIR}/cppjiebaTargets.cmake")
++endif()

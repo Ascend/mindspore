@@ -12,10 +12,12 @@ endif()
 mindspore_add_pkg(
   cppjieba
   VER 5.0.3
-  HEAD_ONLY ./
+  LIBS cppjieba
+  CMAKE_OPTION " "
   URL ${REQ_URL}
   MD5 ${MD5}
   PATCHES ${TOP_DIR}/third_party/patch/cppjieba/cppjieba.patch001
-  TARGET_ALIAS mindspore::cppjieba cppjieba)
+          ${TOP_DIR}/third_party/patch/cppjieba/cppjieba.patch002
+  TARGET_ALIAS mindspore::cppjieba cppjieba::cppjieba)
 include_directories(${cppjieba_INC}include)
 include_directories(${cppjieba_INC}deps)
