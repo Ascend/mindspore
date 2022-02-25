@@ -28,5 +28,3 @@ mindspore_add_pkg(
   TARGET_ALIAS mindspore::event_pthreads libevent::pthreads
   TARGET_ALIAS mindspore::event_core libevent::core
   TARGET_ALIAS mindspore::event_openssl libevent::openssl)
-
-include_directories(${libevent_INC})

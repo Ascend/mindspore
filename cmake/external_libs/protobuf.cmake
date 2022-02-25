@@ -59,7 +59,6 @@ mindspore_add_pkg(
                -DCMAKE_POSITION_INDEPENDENT_CODE=ON
   TARGET_ALIAS mindspore::protobuf protobuf::libprotobuf)
 
-include_directories(${protobuf_INC})
 set(CMAKE_CXX_FLAGS ${_ms_tmp_CMAKE_CXX_FLAGS})
 if(MSVC)
   set(CMAKE_STATIC_LIBRARY_PREFIX, ${_ms_tmp_CMAKE_STATIC_LIBRARY_PREFIX})

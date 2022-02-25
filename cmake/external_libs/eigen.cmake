@@ -11,8 +11,3 @@ mindspore_add_pkg(
   MD5 ${MD5}
   CMAKE_OPTION -DBUILD_TESTING=OFF
   TARGET_ALIAS mindspore::eigen Eigen3::Eigen)
-if(NOT TARGET Eigen3::Eigen)
-  message(FATAL_ERROR "Failed to find Eigen3::Eigen")
-endif()
-include_directories(${Eigen3_INC})
-include_directories(${EIGEN3_INCLUDE_DIR})

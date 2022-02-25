@@ -49,8 +49,6 @@ mindspore_add_pkg(
   TARGET_ALIAS mindspore::flatbuffers flatbuffers::${_flatbuffer_lib_name}
   TARGET_ALIAS mindspore::flatc flatbuffers::flatc)
 
-include_directories(${flatbuffers_INC})
-
 function(ms_build_flatbuffers source_schema_files source_schema_dirs custom_target_name generated_output_dir)
   set(total_schema_dirs "")
   set(total_generated_files "")

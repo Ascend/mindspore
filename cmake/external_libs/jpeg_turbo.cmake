@@ -56,4 +56,3 @@ mindspore_add_pkg(
   PATCHES ${JPEG_TURBO_PATCHE}
   TARGET_ALIAS mindspore::jpeg_turbo TurboJPEG::JPEG
   TARGET_ALIAS mindspore::turbojpeg TurboJPEG::TurboJPEG)
-include_directories(${jpeg_turbo_INC})

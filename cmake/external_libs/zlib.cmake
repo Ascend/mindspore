@@ -16,5 +16,3 @@ mindspore_add_pkg(
   MD5 ${MD5}
   CMAKE_OPTION -DCMAKE_BUILD_TYPE:STRING=Release
   TARGET_ALIAS mindspore::z ZLIB::ZLIB)
-
-include_directories(${zlib_INC})

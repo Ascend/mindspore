@@ -46,7 +46,6 @@ else()
     TARGET_ALIAS mindspore::icudata ICU::data
     TARGET_ALIAS mindspore::icui18n ICU::i18n)
 
-  include_directories(${icu4c_INC})
   if(CMAKE_SYSTEM_NAME MATCHES "Darwin" AND NOT MS_ICU_PREFER_SYSTEM)
     include(${CMAKE_SOURCE_DIR}/cmake/change_rpath.cmake)
     changerpath($<TARGET_FILE:ICU::uc> ${LIB_ICU_COMMON} "libicuuc;libicudata")

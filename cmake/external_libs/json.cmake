@@ -25,4 +25,3 @@ mindspore_add_pkg(
   MD5 ${MD5}
   CMAKE_OPTION -DBUILD_TESTING=OFF -DJSON_MultipleHeaders=ON
   TARGET_ALIAS mindspore::json nlohmann_json::nlohmann_json)
-include_directories(${nlohmann_json_INC})

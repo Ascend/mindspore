@@ -24,5 +24,4 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux" OR APPLE)
     GEN_CMAKE_CONFIG
     TARGET_ALIAS mindspore::ssl OpenSSL::SSL
     TARGET_ALIAS mindspore::crypto OpenSSL::Crypto)
-  include_directories(${openssl_INC})
 endif()

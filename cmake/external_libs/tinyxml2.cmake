@@ -22,4 +22,3 @@ mindspore_add_pkg(
   CMAKE_PKG_NO_COMPONENTS
   MD5 ${MD5}
   TARGET_ALIAS mindspore::tinyxml2 tinyxml2::tinyxml2)
-include_directories(${tinyxml2_INC})

@@ -38,5 +38,3 @@ mindspore_add_pkg(
   MD5 ${MD5} ${ARGS}
   TARGET_ALIAS mindspore::dnnl DNNL::dnnl
   TARGET_ALIAS mindspore::mkldnn DNNL::dnnl)
-
-include_directories(${onednn_INC})

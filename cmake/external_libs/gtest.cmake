@@ -49,8 +49,6 @@ mindspore_add_pkg(
   TARGET_ALIAS mindspore::gtest GTest::gtest
   TARGET_ALIAS mindspore::gmock GTest::gmock)
 
-include_directories(${gtest_INC})
-
 foreach(_tgt GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
   foreach(_prop IMPORTED_LOCATION_RELEASE IMPORTED_LOCATION IMPORTED_LOCATION_DEBUG IMPORTED_LOCATION_NOCONFIG)
     get_target_property(_lib ${_tgt} ${_prop})

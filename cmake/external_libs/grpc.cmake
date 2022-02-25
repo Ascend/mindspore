@@ -99,8 +99,6 @@ mindspore_add_pkg(
     ${_FINDPACKAGE_RE2_CONFIG_DIR}
   TARGET_ALIAS mindspore::grpc++ gRPC::grpc++)
 
-include_directories(${grpc_INC})
-
 # modify mindspore macro define
 add_compile_definitions(grpc=mindspore_grpc)
 add_compile_definitions(grpc_impl=mindspore_grpc_impl)

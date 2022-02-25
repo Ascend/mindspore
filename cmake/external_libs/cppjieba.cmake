@@ -19,5 +19,3 @@ mindspore_add_pkg(
   PATCHES ${TOP_DIR}/third_party/patch/cppjieba/cppjieba.patch001
           ${TOP_DIR}/third_party/patch/cppjieba/cppjieba.patch002
   TARGET_ALIAS mindspore::cppjieba cppjieba::cppjieba)
-include_directories(${cppjieba_INC}include)
-include_directories(${cppjieba_INC}deps)

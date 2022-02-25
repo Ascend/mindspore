@@ -17,4 +17,3 @@ mindspore_add_pkg(
   PRE_CONFIGURE_COMMAND ./autogen.pl
   CONFIGURE_COMMAND ./configure
   TARGET_ALIAS mindspore::ompi MPI::MPI_C)
-include_directories(${ompi_INC})

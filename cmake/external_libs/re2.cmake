@@ -20,5 +20,3 @@ mindspore_add_pkg(
   CMAKE_OPTION -DCMAKE_BUILD_TYPE:STRING=Release -DRE2_BUILD_TESTING:BOOL=OFF
                -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=TRUE
   TARGET_ALIAS mindspore::re2 re2::re2)
-
-include_directories(${re2_INC})

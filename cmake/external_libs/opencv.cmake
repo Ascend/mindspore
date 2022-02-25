@@ -76,11 +76,3 @@ mindspore_add_pkg(
   TARGET_ALIAS mindspore::opencv_core opencv_core
   TARGET_ALIAS mindspore::opencv_imgcodecs opencv_imgcodecs
   TARGET_ALIAS mindspore::opencv_imgproc opencv_imgproc)
-
-if(MSVC)
-  include_directories(${opencv_INC})
-elseif(WIN32)
-  include_directories(${opencv_INC})
-else()
-  include_directories(${opencv_INC}/opencv4)
-endif()

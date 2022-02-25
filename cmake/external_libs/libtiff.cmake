@@ -41,6 +41,7 @@ mindspore_add_pkg(
     -Dwebp=OFF
     -DBUILD_SHARED_LIBS=OFF
     -Dlibdeflate=OFF)
+
 set(tiff_INC "${TIFF_INCLUDE_DIR}")
 set(tiff_LIB "${TIFF_LIBRARIES}")
 

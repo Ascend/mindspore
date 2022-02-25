@@ -42,5 +42,3 @@ mindspore_add_pkg(
   MD5 ${MD5} ${PATCHES}
   TARGET_ALIAS mindspore::sentencepiece sentencepiece::sentencepiece
   TARGET_ALIAS mindspore::sentencepiece_train sentencepiece::sentencepiece_train)
-
-include_directories(${sentencepiece_INC})

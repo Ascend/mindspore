@@ -17,4 +17,3 @@ mindspore_add_pkg(
   BUILD_OPTION_PASS_PREFIX
   GEN_CMAKE_CONFIG
   TARGET_ALIAS mindspore::nccl nccl::nccl)
-include_directories(${nccl_INC})

@@ -33,5 +33,3 @@ mindspore_add_pkg(
   MD5 ${MD5} ${PATCHES} ${CONFIGURE_COMMAND}
   GEN_CMAKE_CONFIG
   TARGET_ALIAS mindspore::sqlite SQLite::SQLite3)
-
-include_directories(${sqlite_INC})

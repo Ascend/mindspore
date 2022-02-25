@@ -25,5 +25,3 @@ mindspore_add_pkg(
   TARGET_ALIAS mindspore::absl_raw_logging_internal absl::raw_logging_internal
   TARGET_ALIAS mindspore::absl_int128 absl::int128
   TARGET_ALIAS mindspore::absl_bad_optional_access absl::bad_optional_access)
-
-include_directories(${absl_INC})

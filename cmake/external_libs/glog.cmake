@@ -46,7 +46,6 @@ mindspore_add_pkg(
   PATCHES ${glog_patch}
   CMAKE_OPTION ${glog_option}
   TARGET_ALIAS mindspore::glog glog::glog)
-include_directories(${glog_INC})
 
 if(NOT MS_PREFER_SYSTEM_PKGS AND NOT MS_GLOG_PREFER_SYSTEM)
   set(MS_PATCHED_GLOG_NAME
