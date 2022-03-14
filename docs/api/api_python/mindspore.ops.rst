@@ -348,7 +348,7 @@ functional算子是经过初始化后的Primitive，可以直接作为函数使�
     mindspore.ops.jvp
     mindspore.ops.laplace
     mindspore.ops.Map
-    mindspore.ops.matmul
+    mindspore.ops.matmul_
     mindspore.ops.multinomial
     mindspore.ops.MultitypeFuncGraph
     mindspore.ops.narrow
