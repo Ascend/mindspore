@@ -13,3 +13,5 @@ add_library(kernels-data OBJECT
         duplicate_op.cc
         unique_op.cc
         )
+target_link_libraries(kernels-data PUBLIC core_headers mindspore::protobuf mindspore::pybind11_module
+                                          mindspore::json $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

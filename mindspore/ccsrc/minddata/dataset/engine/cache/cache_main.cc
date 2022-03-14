@@ -74,7 +74,9 @@ ms::Status StartServer(int argc, char **argv) {
   ds::SharedMessage msg;
   if (daemonize) {
 #ifdef USE_GLOG
+#ifdef MS_PATCHED_GLOG_NAME
 #define google mindspore_private
+#endif  // MS_PATCHED_GLOG_NAME
     FLAGS_logtostderr = false;
     FLAGS_log_dir = ds::DefaultLogDir();
     // Create cache server default log dir
@@ -86,7 +88,9 @@ ms::Status StartServer(int argc, char **argv) {
     ms::g_ms_submodule_log_levels[SUBMODULE_ID] =
       static_cast<int>(strtol(argv[ArgIndex::kLogLevel], nullptr, ds::kDecimal));
     google::InitGoogleLogging(argv[ArgIndex::kProcessName]);
+#ifdef MS_PATCHED_GLOG_NAME
 #undef google
+#endif  // MS_PATCHED_GLOG_NAME
 #endif
     rc = msg.Create();
     if (rc.IsError()) {

@@ -20,3 +20,5 @@ endif()
 set_property(SOURCE ${_DISTRIBUTED_SRC_FILES} PROPERTY COMPILE_DEFINITIONS
             SUBMODULE_ID=mindspore::SubModuleId::SM_DISTRIBUTED)
 add_library(_mindspore_distributed_obj OBJECT ${_DISTRIBUTED_SRC_FILES})
+target_link_libraries(_mindspore_distributed_obj PRIVATE mindspore::protobuf mindspore::json mindspore::pybind11_module
+                                                         $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

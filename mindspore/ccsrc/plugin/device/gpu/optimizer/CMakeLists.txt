@@ -21,4 +21,8 @@ set_property(SOURCE ${_PREACTIVATE_SRC_LIST} PROPERTY COMPILE_DEFINITIONS
   SUBMODULE_ID=mindspore::SubModuleId::SM_PRE_ACT)
 if(ENABLE_GPU)
     add_library(_mindspore_plugin_device_gpu_optimizer_obj OBJECT ${_PREACTIVATE_SRC_LIST})
+    target_link_libraries(_mindspore_plugin_device_gpu_optimizer_obj PUBLIC mindspore::glog
+                                                                            mindspore::json
+                                                                            mindspore::pybind11_module
+                                                                            CUDA::cudart)
 endif()

@@ -19,7 +19,7 @@
 #include <math.h>
 #include <algorithm>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/resize_nearest_neighbor_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __global__ void ResizeNearestNeighbor(const int size, const T *input, const int s1, const int s2, const int s3,

@@ -19,8 +19,10 @@ if(ENABLE_PYTHON)
         c_func_op.cc
         py_func_op.cc
         )
-    target_include_directories(kernels PRIVATE ${pybind11_INCLUDE_DIRS})
+    target_link_libraries(kernels PRIVATE pybind11::headers)
 else()
     add_library(kernels OBJECT
             ${COMMON_TENSOR_OPS})
 endif()
+target_link_libraries(kernels PUBLIC core_headers mindspore::protobuf mindspore::json
+                                     $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

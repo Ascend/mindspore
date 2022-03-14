@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "include/cuda_runtime.h"
+#include "cuda_runtime.h"
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/float_status_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __global__ void IsNan(const size_t size, const T* input, bool* out) {

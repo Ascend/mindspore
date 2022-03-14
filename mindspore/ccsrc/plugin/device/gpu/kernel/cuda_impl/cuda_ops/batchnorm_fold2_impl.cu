@@ -21,7 +21,7 @@
 #include <thrust/system/cuda/execution_policy.h>
 #include "batchnorm_fold2_impl.cuh"
 #include "batchnorm_fold_impl.cuh"
-#include "include/cuda_runtime.h"
+#include "cuda_runtime.h"
 
 
 template <typename T>

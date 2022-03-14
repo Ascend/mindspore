@@ -24,10 +24,17 @@ endif()
 ms_protobuf_generate(EXAMPLE_SRCS EXAMPLE_HDRS example.proto)
 ms_protobuf_generate(FEATURE_SRCS FEATURE_HDRS feature.proto)
 add_library(core OBJECT ${DATASET_CORE_SRC_FILES} ${EXAMPLE_SRCS} ${FEATURE_SRCS})
-add_dependencies(core mindspore::protobuf)
+target_link_libraries(core PUBLIC mindspore::json mindspore::pybind11_module mindspore::protobuf mindspore::jpeg_turbo
+                                  $<$<BOOL:${ENABLE_MINDDATA}>:mindspore::sentencepiece>
+                                  $<$<BOOL:${ENABLE_GPU}>:CUDA::cuda_driver>)
+
+add_library(core_headers INTERFACE)
+target_link_libraries(core_headers INTERFACE $<TARGET_NAME_IF_EXISTS:mindspore::opencv_core>)
+
+target_link_libraries(core PUBLIC core_headers)
 
 if(ENABLE_PYTHON)
-  target_include_directories(core PRIVATE ${pybind11_INCLUDE_DIRS})
+  target_include_directories(core PRIVATE pybind11::headers)
 endif()
 
 if(MSLITE_ENABLE_CLOUD_MIND_DATA)

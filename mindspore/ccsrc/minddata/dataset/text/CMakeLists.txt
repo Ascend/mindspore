@@ -11,5 +11,7 @@ add_library(text OBJECT
         vectors.cc
         vocab.cc
         )
-
+target_link_libraries(text PUBLIC core_headers mindspore::protobuf mindspore::pybind11_module mindspore::json
+                                  $<$<BOOL:${USE_GLOG}>:mindspore::glog>
+                                  $<$<BOOL:${ENABLE_MINDDATA}>:mindspore::sentencepiece>)
 add_dependencies(text text-kernels)

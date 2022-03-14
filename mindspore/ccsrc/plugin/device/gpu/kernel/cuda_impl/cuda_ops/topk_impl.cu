@@ -18,7 +18,7 @@
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/topk_lib.cuh"
 #include <limits>
 #include <algorithm>
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 const int kMaxQueue = 128;
 

@@ -11,7 +11,7 @@ set(FBS_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/../schema/cipher.fbs
         ${CMAKE_CURRENT_SOURCE_DIR}/../schema/fl_job.fbs
         )
-ms_build_flatbuffers(FBS_FILES ${CMAKE_CURRENT_SOURCE_DIR}../../schema generated_fbs_files ${SERVER_FLATBUFFER_OUTPUT})
+ms_build_flatbuffers(FBS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../schema generated_fbs_files ${SERVER_FLATBUFFER_OUTPUT})
 
 if(ENABLE_D)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/plugin/device/ascend/kernel/aicpu/aicpu_ops)
@@ -51,14 +51,7 @@ if(ENABLE_MPI)
 endif()
 
 if(ENABLE_GPU)
-    find_package(CUDA REQUIRED)
-    find_package(Threads)
-    if(${CUDA_VERSION} VERSION_LESS ${MS_REQUIRE_CUDA_VERSION})
-        message(FATAL_ERROR "The minimum CUDA version ${MS_REQUIRE_CUDA_VERSION} is required, \
-              but only CUDA ${CUDA_VERSION} found.")
-    endif()
-    enable_language(CUDA)
-    if(NOT CUDA_PATH OR CUDA_PATH STREQUAL "")
+    if(NOT CUDA_PATH OR "${CUDA_PATH}" STREQUAL "")
         if(DEFINED ENV{CUDA_HOME} AND NOT $ENV{CUDA_HOME} STREQUAL "")
             set(CUDA_PATH $ENV{CUDA_HOME})
         else()
@@ -66,16 +59,24 @@ if(ENABLE_GPU)
         endif()
     endif()
 
-    if(DEFINED ENV{CUDNN_HOME} AND NOT $ENV{CUDNN_HOME} STREQUAL "")
+    enable_language(CUDA)
+    find_package(CUDAToolkit REQUIRED)
+    find_package(Threads)
+    if(CUDAToolkit_VERSION VERSION_LESS ${MS_REQUIRE_CUDA_VERSION})
+        message(FATAL_ERROR "The minimum CUDA version ${MS_REQUIRE_CUDA_VERSION} is required, \
+              but only CUDA ${CUDAToolkit_VERSION} found.")
+    endif()
+
+    if(DEFINED ENV{CUDNN_HOME} AND NOT "$ENV{CUDNN_HOME}" STREQUAL "")
         set(CUDNN_INCLUDE_DIR $ENV{CUDNN_HOME}/include)
         set(CUDNN_LIBRARY_DIR $ENV{CUDNN_HOME}/lib64)
         find_path(CUDNN_INCLUDE_PATH cudnn.h HINTS ${CUDNN_INCLUDE_DIR} NO_DEFAULT_PATH)
         find_library(CUDNN_LIBRARY_PATH "cudnn" HINTS ${CUDNN_LIBRARY_DIR} NO_DEFAULT_PATH)
-        if(CUDNN_INCLUDE_PATH STREQUAL CUDNN_INCLUDE_PATH-NOTFOUND)
+        if(NOT CUDNN_INCLUDE_PATH)
             message(FATAL_ERROR "Failed to find cudnn header file, please set environment variable CUDNN_HOME to \
                     cudnn installation position.")
         endif()
-        if(CUDNN_LIBRARY_PATH STREQUAL CUDNN_LIBRARY_PATH-NOTFOUND)
+        if(NOT CUDNN_LIBRARY_PATH)
             message(FATAL_ERROR "Failed to find cudnn library file, please set environment variable CUDNN_HOME to \
                     cudnn installation position.")
         endif()
@@ -83,14 +84,14 @@ if(ENABLE_GPU)
         list(APPEND CMAKE_PREFIX_PATH  ${CUDA_TOOLKIT_ROOT_DIR})
         find_path(CUDNN_INCLUDE_PATH cudnn.h PATH_SUFFIXES cuda/inclulde include cuda)
         find_library(CUDNN_LIBRARY_PATH "cudnn" PATH_SUFFIXES cuda/lib64 lib64 lib cuda/lib lib/x86_64-linux-gnu)
-        if(CUDNN_INCLUDE_PATH STREQUAL CUDNN_INCLUDE_PATH-NOTFOUND)
+        if(NOT CUDNN_INCLUDE_PATH)
             message(FATAL_ERROR "Failed to find cudnn header file, if cudnn library is not installed, please put \
                     cudnn header file in cuda include path or user include path(eg. /usr/local/cuda/include; \
                     /usr/local/include; /usr/include), if cudnn library is installed in other position, please \
                     set environment variable CUDNN_HOME to cudnn installation position, there should be cudnn.h \
                     in {CUDNN_HOME}/include.")
         endif()
-        if(CUDNN_LIBRARY_PATH STREQUAL CUDNN_LIBRARY_PATH-NOTFOUND)
+        if(NOT CUDNN_LIBRARY_PATH)
             message(FATAL_ERROR "Failed to find cudnn library file, if cudnn library is not installed, please put \
                     cudnn library file in cuda library path or user library path(eg. /usr/local/cuda/lib64; \
                     /usr/local/lib64; /usr/lib64; /usr/local/lib; /usr/lib), if cudnn library is installed in other \
@@ -99,15 +100,21 @@ if(ENABLE_GPU)
         endif()
     endif()
 
-    if(NOT CUPTI_INCLUDE_DIRS OR CUPTI_INCLUDE_DIRS STREQUAL "")
-        set(CUPTI_INCLUDE_DIRS  ${CUDA_PATH}/extras/CUPTI/include)
+    message("CUDAToolkit_LIBRARY_DIR:  ${CUDAToolkit_LIBRARY_DIR}")
+    message("CUDAToolkit_INCLUDE_DIRS: ${CUDAToolkit_INCLUDE_DIRS}")
+    message("CUDNN_INCLUDE_PATH:       ${CUDNN_INCLUDE_PATH}")
+    message("CUDNN_LIBRARY_PATH:       ${CUDNN_LIBRARY_PATH}")
+    include_directories(${CUDNN_INCLUDE_PATH})
+
+    set(_cuda_root)
+    if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.18)
+      set(_cuda_root "${CUDAToolkit_LIBRARY_ROOT}")
+    else()
+      set(_cuda_root "${CUDAToolkit_INCLUDE_DIRS}/..")
     endif()
-    message("CUDA_PATH: ${CUDA_PATH}")
-    message("CUDA_INCLUDE_DIRS: ${CUDA_INCLUDE_DIRS}")
-    message("CUDNN_INCLUDE_PATH: ${CUDNN_INCLUDE_PATH}")
-    message("CUDNN_LIBRARY_PATH: ${CUDNN_LIBRARY_PATH}")
-    message("CUPTI_INCLUDE_DIRS: ${CUPTI_INCLUDE_DIRS}")
-    include_directories(${CUDNN_INCLUDE_PATH} ${CUDA_PATH} ${CUDA_INCLUDE_DIRS} ${CUPTI_INCLUDE_DIRS})
+    if(EXISTS "${_cuda_root}/extras/CUPTI/include")
+      target_include_directories(CUDA::cupti INTERFACE "${_cuda_root}/extras/CUPTI/include")
+    endif()
 
     file(GLOB_RECURSE GPU_SRC_LIST RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
             "plugin/device/gpu/hal/device/*.cc"
@@ -128,9 +135,10 @@ if(ENABLE_GPU)
 
     if(NOT ${TENSORRT_HOME} STREQUAL "")
         find_path(TENSORRT_HOME_INCLUDE NvInfer.h HINTS ${TENSORRT_HOME}/include)
-        if(TENSORRT_HOME_INCLUDE STREQUAL TENSORRT_HOME_INCLUDE-NOTFOUND)
+        if(NOT TENSORRT_HOME_INCLUDE)
           message(FATAL_ERROR "Tensor-RT dir not exist ${TENSORRT_HOME}")
         endif()
+        set(TENSORRT_HOME_INCLUDE "${TENSORRT_HOME_INCLUDE}" CACHE INTERNAL "")
         message("Enable GPU inference. Tensor-RT include dir: ${TENSORRT_HOME_INCLUDE}")
         set(ENABLE_GPU_INFER TRUE)
         add_compile_definitions(ENABLE_GPU_INFER)
@@ -141,6 +149,12 @@ if(ENABLE_GPU)
     set_source_files_properties(${GPU_SRC_LIST} PROPERTIES COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_DEVICE
                                                            LANGUAGE CUDA)
     add_library(gpu_cuda_lib STATIC ${GPU_SRC_LIST})
+    target_compile_features(gpu_cuda_lib PUBLIC cuda_std_17)
+    target_link_libraries(gpu_cuda_lib PUBLIC CUDA::cudart CUDA::cuda_driver CUDA::cupti
+                                              mindspore::json mindspore::pybind11_module mindspore::nccl
+                                              mindspore::protobuf mindspore::grpc++
+                                              $<$<BOOL:${USE_GLOG}>:mindspore::glog>)
+    add_dependencies(gpu_cuda_lib proto_input)
     add_compile_definitions(ENABLE_GPU)
 
     add_subdirectory(plugin/device/gpu/kernel/cuda_impl/cuda_ops)
@@ -221,6 +235,7 @@ list(APPEND MINDSPORE_PROTO_LIST ${CORE_PROTO_SRC})
 
 if(MINDSPORE_PROTO_LIST)
     add_library(proto_input STATIC ${MINDSPORE_PROTO_LIST})
+    target_link_libraries(proto_input PUBLIC mindspore::protobuf mindspore::grpc++)
     set_target_properties(proto_input PROPERTIES COMPILE_FLAGS "-Wno-unused-variable")
 endif()
 
@@ -457,12 +472,12 @@ endif()
 if(ENABLE_GPU)
     message("add gpu lib to c_expression")
     target_link_libraries(_c_expression PRIVATE gpu_cuda_lib gpu_queue cublas cuda_ops
-                          ${CUDA_PATH}/lib64/libcurand.so
+                          CUDA::curand
                           ${CUDNN_LIBRARY_PATH}
-                          ${CUDA_PATH}/lib64/libcudart.so
-                          ${CUDA_PATH}/lib64/stubs/libcuda.so
-                          ${CUDA_PATH}/lib64/libcusolver.so
-                          ${CUDA_PATH}/lib64/libcufft.so)
+                          CUDA::cudart
+                          CUDA::cusolver
+                          CUDA::cuda_driver
+                          CUDA::cufft)
     if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
         target_link_libraries(_c_expression PRIVATE mindspore::crypto mindspore::ssl)
     endif()

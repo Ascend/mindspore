@@ -88,8 +88,8 @@ class BPlusTree {
   using slot_type = typename T::slot_type;
   using traits = T;
   using value_allocator = A;
-  using key_allocator = typename value_allocator::template rebind<key_type>::other;
-  using slot_allocator = typename value_allocator::template rebind<slot_type>::other;
+  using key_allocator = typename std::allocator_traits<value_allocator>::template rebind_alloc<key_type>;
+  using slot_allocator = typename std::allocator_traits<value_allocator>::template rebind_alloc<slot_type>;
 
   BPlusTree();
 
@@ -247,7 +247,7 @@ class BPlusTree {
    public:
     friend class BPlusTree;
 
-    using alloc_type = typename value_allocator::template rebind<InnerNode>::other;
+      using alloc_type = typename std::allocator_traits<value_allocator>::template rebind_alloc<InnerNode>;
 
     bool is_leafnode() const override { return false; }
 
@@ -275,7 +275,7 @@ class BPlusTree {
    public:
     friend class BPlusTree;
 
-    using alloc_type = typename value_allocator::template rebind<LeafNode>::other;
+      using alloc_type = typename std::allocator_traits<value_allocator>::template rebind_alloc<LeafNode>;
     Node<LeafNode> link_;
 
     bool is_leafnode() const override { return true; }

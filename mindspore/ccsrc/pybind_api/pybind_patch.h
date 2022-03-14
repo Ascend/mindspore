@@ -17,7 +17,11 @@
 #define PYBIND_API_PYBIND_PATCH_H_
 
 namespace pybind11 {
+#if (PYBIND11_VERSION_MAJOR < 2 ||   \
+     (PYBIND11_VERSION_MAJOR == 2 && \
+      (PYBIND11_VERSION_MINOR < 8 || (PYBIND11_VERSION_MINOR == 8 && PYBIND11_VERSION_PATCH < 1))))
 PYBIND11_RUNTIME_EXCEPTION(attribute_error, PyExc_AttributeError)
+#endif  // Pybind11 <= 2.8.1
 PYBIND11_RUNTIME_EXCEPTION(name_error, PyExc_NameError)
 }  // namespace pybind11
 

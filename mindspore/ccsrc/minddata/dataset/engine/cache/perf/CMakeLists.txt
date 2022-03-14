@@ -9,6 +9,7 @@ if(ENABLE_CACHE)
       _c_dataengine
       _c_mindrecord
       mindspore
+      mindspore_core
       mindspore::protobuf
       ${PYTHON_LIBRARIES}
       pthread)
@@ -22,6 +23,7 @@ if(ENABLE_CACHE)
       _c_dataengine
       _c_mindrecord
       mindspore
+      mindspore_core
       mindspore::protobuf
       ${PYTHON_LIBRARIES}
       pthread)

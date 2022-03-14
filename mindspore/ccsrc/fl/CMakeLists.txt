@@ -61,5 +61,6 @@ list(LENGTH _FL_SRC_FILES fl_file_num)
 if(NOT fl_file_num EQUAL 0)
     set_property(SOURCE ${_FL_SRC_FILES} PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_FL)
     add_library(_mindspore_fl_obj OBJECT ${_FL_SRC_FILES})
-    target_link_libraries(_mindspore_fl_obj mindspore::flatbuffers)
+    target_link_libraries(_mindspore_fl_obj PUBLIC mindspore::flatbuffers mindspore::protobuf mindspore::json
+                                                   $<$<BOOL:${USE_GLOG}>:mindspore::glog>)
 endif()

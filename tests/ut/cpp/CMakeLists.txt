@@ -90,6 +90,13 @@ if(ENABLE_MINDDATA)
         list(REMOVE_ITEM UT_SRCS ${PYTHON_RELATED_SRCS})
     endif()
 
+    if(ENABLE_CPU)
+      set(CPU_RELATED_SRCS
+        stub/runtime/kernel_select_cpu.cc
+        )
+      list(REMOVE_ITEM UT_SRCS ${CPU_RELATED_SRCS})
+    endif()
+
     if(NOT ENABLE_ACL)
         set(ASCEND310_RELATED_SRCS
                 dataset/dvpp_decode_jpeg_test.cc
@@ -236,8 +243,31 @@ if(ENABLE_SECURITY)
 endif()
 list(REMOVE_ITEM MINDSPORE_SRC_LIST "../../../mindspore/ccsrc/profiler/device/ascend/parallel_strategy_profiling.cc")
 
+if(ENABLE_GPU)
+  set_source_files_properties(dataset/arena_test.cc dataset/circular_pool_test.cc
+    dataset/memory_pool_test.cc
+    PROPERTIES COMPILE_DEFINITIONS ENABLE_GPUQUE)
+endif()
+
 add_library(_ut_mindspore_obj OBJECT ${MINDSPORE_SRC_LIST})
+target_link_libraries(_ut_mindspore_obj PUBLIC mindspore::protobuf
+                                               mindspore::grpc++
+                                               mindspore::flatbuffers
+                                               mindspore::pybind11_module
+                                               mindspore::json)
 add_library(_ut_ut_obj OBJECT ${UT_SRCS})
+target_link_libraries(_ut_ut_obj PUBLIC core_headers
+                                        mindspore::pybind11_module
+                                        mindspore::json
+                                        mindspore::protobuf
+                                        mindspore::grpc++
+                                        mindspore::flatbuffers
+                                        mindspore::gtest
+                                        mindspore::jpeg_turbo
+                                        mindspore::tinyxml2
+                                        mindspore::cppjieba
+                                        mindspore::icuuc
+                                        $<$<BOOL:${ENABLE_MINDDATA}>:mindspore::sentencepiece>)
 add_dependencies(_ut_ut_obj engine-cache-server)
 set(ut_objects $<TARGET_OBJECTS:_ut_ut_obj> $<TARGET_OBJECTS:_ut_mindspore_obj>
         $<TARGET_OBJECTS:core_obj> $<TARGET_OBJECTS:core_proto_obj> $<TARGET_OBJECTS:mindrt_mid>
@@ -245,6 +275,9 @@ set(ut_objects $<TARGET_OBJECTS:_ut_ut_obj> $<TARGET_OBJECTS:_ut_mindspore_obj>
         $<TARGET_OBJECTS:_mindspore_common_obj>)
 if(ENABLE_MINDDATA)
     set(ut_objects ${ut_objects} ${dataengine_submodules} $<TARGET_OBJECTS:mindrecord_obj>)
+endif()
+if(ENABLE_GPU)
+    set(ut_objects ${ut_objects} $<TARGET_OBJECTS:_mindspore_device_cuda_obj> $<TARGET_OBJECTS:gpu_queue_obj>)
 endif()
 add_executable(ut_tests ${ut_objects})
 
@@ -263,6 +296,7 @@ list(APPEND MINDSPORE_PROTO_LIST ${DUMP_PROTOSRCS})
 
 if(MINDSPORE_PROTO_LIST)
     add_library(proto_input_ut STATIC ${MINDSPORE_PROTO_LIST})
+    target_link_libraries(proto_input_ut PUBLIC mindspore::protobuf)
     set_target_properties(proto_input_ut PROPERTIES COMPILE_FLAGS "-Wno-unused-variable")
 endif()
 
@@ -278,7 +312,10 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
 else()
     target_link_libraries(ut_tests PRIVATE mindspore::gtest ${PYTHON_LIBRARIES})
 endif()
+
 if(USE_GLOG)
+    target_link_libraries(_ut_mindspore_obj PRIVATE mindspore::glog)
+    target_link_libraries(_ut_ut_obj PRIVATE mindspore::glog)
     target_link_libraries(ut_tests PRIVATE mindspore::glog)
 endif()
 

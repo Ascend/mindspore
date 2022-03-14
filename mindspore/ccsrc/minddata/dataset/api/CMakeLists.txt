@@ -25,7 +25,13 @@ if(ENABLE_PYTHON)
             python/pybind_conversion.cc
             python/pybind_register.cc
             )
-    target_include_directories(APItoPython PRIVATE ${pybind11_INCLUDE_DIRS})
+    target_link_libraries(APItoPython PUBLIC core_headers $<$<BOOL:${ENABLE_GPU}>:CUDA::cudart>
+                                             pybind11::headers mindspore::eigen mindspore::protobuf mindspore::grpc++
+                                             mindspore::flatbuffers mindspore::absl_strings mindspore::json
+                                             mindspore::pybind11_module mindspore::jpeg_turbo
+                                             $<$<BOOL:${USE_GLOG}>:mindspore::glog>
+                                             $<$<BOOL:${ENABLE_MINDDATA}>:mindspore::sentencepiece>)
+    target_compile_definitions(APItoPython PRIVATE _USE_TF_STRING_VIEW)
 endif()
 
 add_library(cpp-API OBJECT
@@ -40,3 +46,10 @@ add_library(cpp-API OBJECT
         text.cc
         vision.cc
         )
+target_link_libraries(cpp-API PUBLIC core_headers $<$<BOOL:${ENABLE_GPU}>:CUDA::cudart>
+                                     mindspore::eigen mindspore::protobuf mindspore::json mindspore::grpc++
+                                     mindspore::flatbuffers mindspore::absl_strings mindspore::json
+                                     mindspore::pybind11_module mindspore::jpeg_turbo
+                                     $<$<BOOL:${USE_GLOG}>:mindspore::glog>
+                                     $<$<BOOL:${ENABLE_MINDDATA}>:mindspore::sentencepiece>)
+target_compile_definitions(cpp-API PRIVATE _USE_TF_STRING_VIEW)

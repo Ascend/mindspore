@@ -10,3 +10,6 @@ add_library(
         cpu_sampler.cc
         auto_tune.cc
 )
+target_link_libraries(engine-perf PUBLIC core_headers mindspore::protobuf mindspore::grpc++ mindspore::flatbuffers
+                                         mindspore::json mindspore::pybind11_module
+                                         $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

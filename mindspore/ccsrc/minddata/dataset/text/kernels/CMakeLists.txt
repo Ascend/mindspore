@@ -27,3 +27,11 @@ add_library(text-kernels OBJECT
         sentence_piece_tokenizer_op.cc
         ${ICU_DEPEND_FILES}
         )
+target_link_libraries(text-kernels PUBLIC core_headers
+                                          mindspore::protobuf
+                                          mindspore::pybind11_module
+                                          mindspore::json
+                                          mindspore::icui18n
+                                          $<TARGET_NAME_IF_EXISTS:mindspore::cppjieba>
+                                          $<$<BOOL:${ENABLE_MINDDATA}>:mindspore::sentencepiece>
+                                          $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

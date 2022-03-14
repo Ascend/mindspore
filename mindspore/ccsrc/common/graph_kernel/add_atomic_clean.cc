@@ -540,11 +540,11 @@ std::vector<std::tuple<AnfNodePtr, int, AnfNodePtr>> AtomicCleanInsertter::FindO
         }
       }
     }
-    for (auto &[getitem_node, broadcast_to_node] : getitem_user_nodes) {
+    for (const auto& user_node: getitem_user_nodes) {
       // Directory to find real user.
-      auto real_users = mng->node_users()[getitem_node];
+      auto real_users = mng->node_users()[std::get<0>(user_node)];
       (void)std::transform(real_users.cbegin(), real_users.cend(), std::back_inserter(reduce_user_nodes),
-                           [&broadcast_to_node](const std::pair<AnfNodePtr, int> &pair) {
+                           [&broadcast_to_node = std::get<1>(user_node)](const std::pair<AnfNodePtr, int> &pair) {
                              return std::make_tuple(pair.first, pair.second, broadcast_to_node);
                            });
     }

@@ -307,9 +307,10 @@ size_t SomasSolverCore::Search(const std::shared_ptr<FootPrint> &pFootprint) {
     if (all_ || is_multi_thread_valid_) {
       const double giga = 1073741824.;
       MS_LOG(INFO) << timing_ << " ms\t" << sol_count_ + 1 << "/"
-                   << kNumFittingTypes * kNumAlgorithmTypes * kNumSortingTypes << "\t" << result << " Bytes ("
-                   << result / giga << " GB)\t" << algorithmTypeNames[algorithm_] << "\t"
-                   << sortingNames[sort_strategy_] << "\t" << branchingNames[branching_strategy_];
+                   << static_cast<int>(kNumFittingTypes) * static_cast<int>(kNumAlgorithmTypes) *
+                        static_cast<int>(kNumSortingTypes)
+                   << "\t" << result << " Bytes (" << result / giga << " GB)\t" << algorithmTypeNames[algorithm_]
+                   << "\t" << sortingNames[sort_strategy_] << "\t" << branchingNames[branching_strategy_];
     }
   } else {
     MS_LOG(INFO) << "FastSolver could not find solution";

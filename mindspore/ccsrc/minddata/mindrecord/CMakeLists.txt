@@ -24,6 +24,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=default")
 # add shared link library
 set_property(SOURCE ${DIR_LIB_SRCS} PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_MD)
 add_library(mindrecord_obj OBJECT ${DIR_LIB_SRCS})
+target_link_libraries(mindrecord_obj PUBLIC mindspore::json mindspore::pybind11_module)
 add_library(_c_mindrecord SHARED $<TARGET_OBJECTS:mindrecord_obj>)
 
 set_target_properties(_c_mindrecord PROPERTIES
@@ -43,6 +44,7 @@ else()
 endif()
 target_link_libraries(_c_mindrecord PRIVATE mindspore_core)
 if(USE_GLOG)
+    target_link_libraries(mindrecord_obj PRIVATE mindspore::glog)
     target_link_libraries(_c_mindrecord PRIVATE mindspore::glog)
 else()
     if(CMAKE_SYSTEM_NAME MATCHES "Linux")

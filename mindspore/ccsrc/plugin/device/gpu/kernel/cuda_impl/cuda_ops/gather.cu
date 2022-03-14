@@ -16,7 +16,7 @@
 
 #include <iostream>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/gather.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T, typename S>
 __global__ void GatherKernel(const T *input, const S *index, T *output, const size_t dim_before_axis,
                              const size_t dim_at_axis_input, const size_t dim_at_axis_output,

@@ -18,7 +18,7 @@
 #include <stdint.h>
 #include <cuda_runtime.h>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/unpack.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T>
 __global__ void Unpack(const size_t size, const size_t output_num,
                        const size_t dims_after_axis, T** outputs, const T* input) {

@@ -15,7 +15,7 @@
  */
 
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/extract_image_patches_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __global__ void ExtractImagePatches(size_t output_size, int64_t stride_row, int64_t stride_col, int64_t rate_row,

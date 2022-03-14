@@ -36,7 +36,9 @@ thread_local enum MsLogLevel this_thread_max_log_level = EXCEPTION;
 #endif
 
 #ifdef USE_GLOG
+#ifdef MS_PATCHED_GLOG_NAME
 #define google mindspore_private
+#endif  // MS_PATCHED_GLOG_NAME
 static std::string GetProcName() {
 #if defined(__APPLE__) || defined(__FreeBSD__)
   const std::string appname = getprogname();
@@ -96,7 +98,10 @@ static int GetThresholdLevel(const std::string &threshold) {
     return google::GLOG_WARNING;
   }
 }
+
+#ifdef MS_PATCHED_GLOG_NAME
 #undef google
+#endif  // MS_PATCHED_GLOG_NAME
 #else
 
 #undef Dlog
@@ -140,7 +145,9 @@ LogWriter::TraceProvider LogWriter::trace_provider() { return trace_provider_; }
 
 void LogWriter::OutputLog(const std::ostringstream &msg) const {
 #ifdef USE_GLOG
+#ifdef MS_PATCHED_GLOG_NAME
 #define google mindspore_private
+#endif  // MS_PATCHED_GLOG_NAME
   auto submodule_name = GetSubModuleName(submodule_);
   google::LogMessage("", 0, GetGlogLevel(log_level_)).stream()
 #ifdef _MSC_VER
@@ -151,7 +158,9 @@ void LogWriter::OutputLog(const std::ostringstream &msg) const {
 #endif
     << std::this_thread::get_id() << std::dec << "," << GetProcName() << "):" << GetTimeString() << " "
     << "[" << location_.file_ << ":" << location_.line_ << "] " << location_.func_ << "] " << msg.str() << std::endl;
+#ifdef MS_PATCHED_GLOG_NAME
 #undef google
+#endif  // MS_PATCHED_GLOG_NAME
 #else
   auto str_msg = msg.str();
   auto slog_module_id = (submodule_ == SM_MD ? MD : ME);
@@ -585,7 +594,9 @@ __attribute__((constructor)) void mindspore_log_init(void) {
 void mindspore_log_init(void) {
 #endif
 #ifdef USE_GLOG
+#ifdef MS_PATCHED_GLOG_NAME
 #define google mindspore_private
+#endif  // MS_PATCHED_GLOG_NAME
   static bool is_glog_initialzed = false;
   if (!is_glog_initialzed) {
 #if !defined(_WIN32) && !defined(_WIN64) && !defined(__APPLE__)
@@ -593,7 +604,9 @@ void mindspore_log_init(void) {
 #endif
     is_glog_initialzed = true;
   }
+#ifdef MS_PATCHED_GLOG_NAME
 #undef google
+#endif  // MS_PATCHED_GLOG_NAME
 #endif
   common_log_init();
 }

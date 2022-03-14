@@ -25,5 +25,9 @@ else()
     ms_grpc_generate(GNN_PROTO_SRCS GNN_PROTO_HDRS "gnn_graph_data.proto")
 
     add_library(engine-gnn OBJECT ${DATASET_ENGINE_GNN_SRC_FILES} ${TENSOR_PROTO_SRCS} ${GNN_PROTO_SRCS})
+    target_link_libraries(engine-gnn PUBLIC core_headers mindspore::protobuf mindspore::grpc++)
     add_dependencies(engine-gnn mindspore::protobuf)
 endif()
+
+target_link_libraries(engine-gnn PUBLIC mindspore::pybind11_module mindspore::json
+                                        $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

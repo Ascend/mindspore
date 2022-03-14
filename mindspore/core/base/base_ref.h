@@ -77,11 +77,7 @@ inline BasePtr MakeNode(const T &v) {
 }
 
 inline std::shared_ptr<VectorRef> MakeNode(const VectorRef &a) { return std::make_shared<VectorRef>(std::move(a)); }
-inline std::shared_ptr<VectorRef> MakeNode(const AnfNodePtrList &a) {
-  std::vector<BaseRef> ret;
-  (void)std::transform(a.begin(), a.end(), std::back_inserter(ret), [](const AnfNodePtr &v) { return v; });
-  return std::make_shared<VectorRef>(ret);
-}
+inline std::shared_ptr<VectorRef> MakeNode(const AnfNodePtrList &a);
 inline std::shared_ptr<SetRef> MakeNode(const SetRef &a) { return std::make_shared<SetRef>(std::move(a)); }
 inline std::shared_ptr<RunFunctionRef> MakeNode(const RunFuncPtr &a) { return std::make_shared<RunFunctionRef>(a); }
 
@@ -181,6 +177,13 @@ class MS_CORE_API BaseRef : public Base {
 
   BasePtr m_ptr; /**< pointer to the real data */
 };
+
+inline std::shared_ptr<VectorRef> MakeNode(const AnfNodePtrList &a) {
+  std::vector<BaseRef> ret;
+  (void)std::transform(a.begin(), a.end(), std::back_inserter(ret), [](const AnfNodePtr &v) { return v; });
+  return std::make_shared<VectorRef>(ret);
+}
+
 using BaseRefPtr = std::shared_ptr<BaseRef>;
 
 struct BaseRefHash {

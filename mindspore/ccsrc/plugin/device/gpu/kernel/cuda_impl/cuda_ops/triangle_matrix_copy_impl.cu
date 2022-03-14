@@ -15,7 +15,7 @@
  */
 
 #include "triangle_matrix_copy_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T>
 __global__ void TriangleMatrixCopyKernel(const T *input, T *output, bool clean, cublasFillMode_t uplo,
                                          const size_t count, const size_t ldb, const size_t m) {

@@ -407,7 +407,11 @@ Status JpegCropAndDecode(const std::shared_ptr<Tensor> &input, std::shared_ptr<T
       std::to_string(crop_w) + ", crop height:" + std::to_string(crop_h) +
       ", and crop x coordinate:" + std::to_string(crop_x) + ", crop y coordinate:" + std::to_string(crop_y));
   }
+  #if JPEG_LIB_VERSION >= 70
+  const int mcu_size = cinfo.min_DCT_h_scaled_size;
+  #else
   const int mcu_size = cinfo.min_DCT_scaled_size;
+  #endif
   CHECK_FAIL_RETURN_UNEXPECTED(mcu_size != 0, "JpegCropAndDecode: divisor mcu_size is zero.");
   unsigned int crop_x_aligned = (crop_x / mcu_size) * mcu_size;
   unsigned int crop_w_aligned = crop_w + crop_x - crop_x_aligned;

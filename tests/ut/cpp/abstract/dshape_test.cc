@@ -61,7 +61,7 @@ TEST_F(TestDShape, EqualTest) {
 
   ASSERT_TRUE(shp_noshp_1 == shp_noshp_2);
 
-  ASSERT_FALSE(shp_tuple_1 == shp_1);
+  ASSERT_FALSE(shp_tuple_1.SequenceEqual<TupleShape>(shp_1));
   ASSERT_FALSE(shp_tuple_1 == shp_tuple_2);
   ASSERT_FALSE(shp_tuple_1 == shp_tuple_4);
 }

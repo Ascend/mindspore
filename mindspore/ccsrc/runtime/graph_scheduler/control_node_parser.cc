@@ -213,7 +213,7 @@ void FetchWeightbyHostParameter(const AnfNodePtr &node, std::set<AnfNodePtr> *co
   }
 
   const auto weight_nodes = iter->second;
-  for (const auto weight_node : weight_nodes) {
+  for (const auto &weight_node : weight_nodes) {
     FetchWeightbyHostParameter(weight_node.first, dest_nodes, front_to_front_weight);
   }
 }
@@ -1325,7 +1325,7 @@ void ControlNodeParser::ParseFormalToRealParameter(const std::vector<AnfNodePtr>
       const auto &cnode = node->cast<CNodePtr>();
       const auto &inputs = cnode->inputs();
       const auto &func_graphs = FetchFuncGraphbyCallNode(node);
-      for (const auto func_graph : func_graphs) {
+      for (const auto &func_graph : func_graphs) {
         const auto &parameters = func_graph->parameters();
         for (int i = SizeToInt(inputs.size()) - 1, j = SizeToInt(parameters.size()) - 1; i >= 1 && j >= 0; --i, --j) {
           MS_EXCEPTION_IF_NULL(inputs[IntToSize(i)]);
@@ -1493,7 +1493,7 @@ void ControlNodeParser::ParseFrontToBackendParameter(const std::vector<KernelGra
         std::set<KernelWithIndex> invalid_call_nodes;
         FetchRealParameterByNode(front_node_with_index, &real_parameters, &invalid_call_nodes,
                                  call_node_to_func_graphs_);
-        for (const auto real_parameter : real_parameters) {
+        for (const auto &real_parameter : real_parameters) {
           if (real_parameter.first->isa<Parameter>() || real_parameter.first->isa<ValueNode>()) {
             (void)front_to_backend_parameters_[real_parameter].emplace(parameter, device_context);
           }

@@ -15,7 +15,7 @@
  */
 
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/gelu_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __global__ void GeluKernel(size_t size, T *input_addr, T *output_addr) {

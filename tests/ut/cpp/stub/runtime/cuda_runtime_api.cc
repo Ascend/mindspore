@@ -15,20 +15,57 @@
  */
 #include <cuda_runtime_api.h>
 
+extern "C" {
+
 cudaError_t cudaMalloc(void **devPtr, size_t size) { return cudaSuccess; }
+
+cudaError_t cudaHostAlloc(void **pHost, size_t size, unsigned int flags) { return cudaSuccess; }
 
 cudaError_t cudaFree(void *devPtr) { return cudaSuccess; }
 
+cudaError_t cudaFreeHost(void *devPtr) { return cudaSuccess; }
+
 cudaError_t cudaMemcpy(void *dst, const void *src, size_t count, enum cudaMemcpyKind kind) { return cudaSuccess; }
+
+cudaError_t cudaMemcpyAsync(void *dst, const void *src, size_t count, cudaMemcpyKind kind, cudaStream_t stream) {
+  return cudaSuccess;
+}
+
+cudaError_t cudaMemsetAsync(void *devPtr, int value, size_t count, cudaStream_t stream) { return cudaSuccess; }
 
 cudaError_t cudaMemGetInfo(size_t *free, size_t *total) { return cudaSuccess; }
 
 cudaError_t cudaStreamCreate(cudaStream_t *pStream) { return cudaSuccess; }
 
+cudaError_t cudaStreamCreateWithFlags(cudaStream_t *pStream, unsigned int flags) { return cudaSuccess; }
+
 cudaError_t cudaStreamDestroy(cudaStream_t stream) { return cudaSuccess; }
 
 cudaError_t cudaStreamSynchronize(cudaStream_t stream) { return cudaSuccess; }
 
+cudaError_t cudaStreamWaitEvent(cudaStream_t stream, cudaEvent_t event, unsigned int flags) { return cudaSuccess; }
+
 cudaError_t cudaGetDeviceCount(int *count) { return cudaSuccess; }
 
+cudaError_t cudaGetDeviceProperties(cudaDeviceProp *prop, int device) { return cudaSuccess; }
+
 cudaError_t cudaSetDevice(int device) { return cudaSuccess; }
+
+const char *cudaGetErrorString(cudaError_t error) { return ""; }
+
+cudaError_t cudaEventCreate(cudaEvent_t *event) { return cudaSuccess; }
+
+cudaError_t cudaEventDestroy(cudaEvent_t event) { return cudaSuccess; }
+
+cudaError_t cudaEventQuery(cudaEvent_t event) { return cudaSuccess; }
+
+cudaError_t cudaEventElapsedTime(float *ms, cudaEvent_t start, cudaEvent_t end) { return cudaSuccess; }
+
+cudaError_t cudaEventCreateWithFlags(cudaEvent_t *event, unsigned int flags) { return cudaSuccess; }
+
+cudaError_t cudaEventRecord(cudaEvent_t event, cudaStream_t stream) { return cudaSuccess; }
+
+cudaError_t cudaEventRecordWithFlags(cudaEvent_t event, cudaStream_t stream, unsigned int flags) { return cudaSuccess; }
+
+cudaError_t cudaEventSynchronize(cudaEvent_t event) { return cudaSuccess; }
+}

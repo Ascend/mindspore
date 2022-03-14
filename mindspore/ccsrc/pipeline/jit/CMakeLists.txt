@@ -32,3 +32,7 @@ if("${ENABLE_HIDDEN}" STREQUAL "OFF")
 endif()
 
 add_library(_mindspore_pipeline_jit_obj OBJECT ${_PIPELINE_SRC_FILES})
+target_link_libraries(_mindspore_pipeline_jit_obj PRIVATE mindspore::protobuf mindspore::flatbuffers mindspore::grpc++
+                                                          mindspore::pybind11_module mindspore::json
+                                                          $<$<BOOL:${USE_GLOG}>:mindspore::glog>)
+add_dependencies(_mindspore_pipeline_jit_obj generated_fbs_files)

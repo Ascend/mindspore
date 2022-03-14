@@ -70,7 +70,7 @@ struct npy_format_descriptor<float16> {
     handle ptr = npy_api::get().PyArray_DescrFromType_(kNpyFloat16);
     return reinterpret_borrow<pybind11::dtype>(ptr);
   }
-  virtual ~npy_format_descriptor<float16>() {}
+  virtual ~npy_format_descriptor() {}
 
   static std::string format() {
     // following: https://docs.python.org/3/library/struct.html#format-characters

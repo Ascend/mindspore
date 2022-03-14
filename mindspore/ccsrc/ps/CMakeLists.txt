@@ -56,4 +56,7 @@ add_subdirectory(ps_cache)
 
 set_property(SOURCE ${_PS_SRC_FILES} PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_PS)
 add_library(_mindspore_ps_obj OBJECT ${_PS_SRC_FILES})
-target_link_libraries(_mindspore_ps_obj mindspore::flatbuffers)
+target_link_libraries(_mindspore_ps_obj PUBLIC mindspore::flatbuffers mindspore::protobuf mindspore::grpc++
+                                               mindspore::json mindspore::pybind11_module
+                                               $<$<BOOL:${USE_GLOG}>:mindspore::glog>
+                                               $<$<BOOL:${ENABLE_GPU}>:CUDA::cudart>)

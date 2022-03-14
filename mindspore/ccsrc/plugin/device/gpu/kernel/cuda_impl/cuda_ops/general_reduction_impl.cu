@@ -16,7 +16,7 @@
 
 #include <algorithm>
 #include <limits>
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/general_reduction_impl.cuh"
 
 const int kWarpSize = 32;

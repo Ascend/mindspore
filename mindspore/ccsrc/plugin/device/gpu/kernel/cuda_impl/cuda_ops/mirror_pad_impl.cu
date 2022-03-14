@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/mirror_pad_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 // check for existence in current padded array on X and Y dims
 __inline__ __device__ bool range_check(int x, int y, int padded_width, int padded_height) {

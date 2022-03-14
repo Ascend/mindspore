@@ -15,7 +15,7 @@
  */
 
 #include "l2normalize_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T>
 __global__ void AssignEps(const size_t size, const float eps, T* value) {
   for (size_t pos = blockIdx.x * blockDim.x + threadIdx.x; pos < (size); pos += blockDim.x * gridDim.x) {

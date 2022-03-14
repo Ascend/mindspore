@@ -19,7 +19,7 @@
 
 namespace mindspore {
 namespace ps {
-bool InitRandomNormal(float mean, float stddev, std::vector<size_t> out_shape, size_t global_seed, size_t op_seed,
+bool InitRandomNormal(float mean, float stddev, std::vector<std::size_t> out_shape, std::size_t global_seed, std::size_t op_seed,
                       float *output_data);
 }  // namespace ps
 }  // namespace mindspore

@@ -5,3 +5,6 @@ add_library(md_plugin OBJECT
         shared_lib_util.cc
         plugin_loader.cc
         )
+if(USE_GLOG)
+     target_link_libraries(md_plugin PUBLIC mindspore::glog)
+endif()

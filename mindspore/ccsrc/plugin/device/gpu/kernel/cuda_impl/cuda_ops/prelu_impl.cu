@@ -15,7 +15,7 @@
  */
 
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/prelu_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __global__ void CalPReLUKernel(size_t size, size_t weight_size, size_t per_channel_size,

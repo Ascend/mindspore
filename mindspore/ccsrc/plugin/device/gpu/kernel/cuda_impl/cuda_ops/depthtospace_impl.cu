@@ -15,7 +15,7 @@
  */
 #include <cuda_runtime.h>
 #include "depthtospace_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __global__ void DepthToSpace(const size_t size, const T *input, const size_t in,

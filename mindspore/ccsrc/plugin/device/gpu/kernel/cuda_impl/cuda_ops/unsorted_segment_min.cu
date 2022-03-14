@@ -16,7 +16,7 @@
 
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/unsorted_segment_min.cuh"
 #include <limits>
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __device__ __forceinline__ void max_val_init(T *init_val) {

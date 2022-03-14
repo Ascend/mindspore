@@ -21,3 +21,8 @@ if(ENABLE_PYTHON)
 endif()
 
 add_library(engine-datasetops-source-sampler OBJECT ${DATASET_ENGINE_DATASETOPS_SOURCE_SAMPLER_SRC_FILES})
+target_link_libraries(engine-datasetops-source-sampler PUBLIC core_headers mindspore::protobuf
+                                                              mindspore::pybind11_module mindspore::json)
+if(USE_GLOG)
+     target_link_libraries(engine-datasetops-source-sampler PUBLIC mindspore::glog)
+endif()

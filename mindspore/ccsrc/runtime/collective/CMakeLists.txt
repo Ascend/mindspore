@@ -6,3 +6,5 @@ endif()
 
 set_property(SOURCE ${COLLECTIVE_SRC_LIST} PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_DEVICE)
 add_library(_mindspore_runtime_collective_obj OBJECT ${COLLECTIVE_SRC_LIST})
+target_link_libraries(_mindspore_runtime_collective_obj PUBLIC mindspore::pybind11_module
+                                                               $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

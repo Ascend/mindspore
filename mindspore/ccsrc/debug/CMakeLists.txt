@@ -66,6 +66,9 @@ endif()
 set_property(SOURCE ${_DEBUG_SRC_LIST} ${_RDR_SRC_LIST} PROPERTY COMPILE_DEFINITIONS
     SUBMODULE_ID=mindspore::SubModuleId::SM_DEBUG)
 add_library(_mindspore_debug_obj OBJECT ${_DEBUG_SRC_LIST} ${_RDR_SRC_LIST})
+target_link_libraries(_mindspore_debug_obj PRIVATE mindspore::protobuf mindspore::grpc++ mindspore::json
+                                                   mindspore::pybind11_module $<$<BOOL:${USE_GLOG}>:mindspore::glog>)
+
 if(ENABLE_DEBUGGER)
     if(NOT CMAKE_SYSTEM_NAME MATCHES "Windows")
         add_compile_options(-Wall -DOFFLINE_DBG_MODE -O2)
@@ -75,6 +78,8 @@ if(ENABLE_DEBUGGER)
         target_link_libraries(_mindspore_offline_debug PRIVATE
             mindspore::pybind11_module
             mindspore_core
+            mindspore::json
+            $<$<BOOL:${USE_GLOG}>:mindspore::glog>
             )
         set_target_properties(_mindspore_offline_debug PROPERTIES
             PREFIX "${PYTHON_MODULE_PREFIX}"

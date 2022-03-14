@@ -15,8 +15,8 @@
  */
 
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/fill_impl.cuh"
-#include "include/cuda_runtime.h"
-#include "include/cuda_fp16.h"
+#include "cuda_runtime.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __global__ void FillKernel(const size_t m, const size_t n, const T *input, T *output) {

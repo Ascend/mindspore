@@ -15,7 +15,7 @@
  */
 
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/apply_gradient_descent_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __global__ void ApplyGradientDescent(const size_t size, T *var, const T *alpha, const T *delta, T *output) {

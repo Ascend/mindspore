@@ -2,3 +2,6 @@ file(GLOB_RECURSE _OPERATOR_SRC_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cc
 set_property(SOURCE ${_OPERATOR_SRC_FILES} PROPERTY COMPILE_DEFINITIONS
   SUBMODULE_ID=mindspore::SubModuleId::SM_ANALYZER)
 add_library(_mindspore_frontend_operator_obj OBJECT ${_OPERATOR_SRC_FILES})
+
+target_link_libraries(_mindspore_frontend_operator_obj PUBLIC mindspore::pybind11_module
+                                                              $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

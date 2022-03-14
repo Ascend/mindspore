@@ -18,6 +18,7 @@
 #define PARALLEL_AUTO_PARALLEL_REC_COST_H_
 
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <string>
 #include <utility>

@@ -17,7 +17,7 @@
 #ifndef MINDSPORE_CCSRC_PLUGIN_DEVICE_GPU_KERNEL_CUDA_IMPL_CUDA_OPS_RESIZE_BILINEAR_IMPL_CUH_
 #define MINDSPORE_CCSRC_PLUGIN_DEVICE_GPU_KERNEL_CUDA_IMPL_CUDA_OPS_RESIZE_BILINEAR_IMPL_CUH_
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/cuda_common.h"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T>
 CUDA_LIB_EXPORT void CalResizeBilinear(const T *input, const int n_, const int c_, const int input_h_,
                                        const int input_w_, const int output_h_, const int output_w_,

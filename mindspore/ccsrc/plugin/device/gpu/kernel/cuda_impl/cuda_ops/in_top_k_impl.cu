@@ -15,7 +15,7 @@
  */
 #include "in_top_k_impl.cuh"
 #include <cuda_runtime.h>
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __global__ void InTopK(const T *predictions, const int32_t *targets, bool *output, const T *top_k_output,

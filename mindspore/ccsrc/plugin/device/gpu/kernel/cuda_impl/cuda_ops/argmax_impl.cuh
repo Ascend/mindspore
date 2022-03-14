@@ -16,7 +16,7 @@
 
 #ifndef MINDSPORE_CCSRC_PLUGIN_DEVICE_GPU_KERNEL_CUDA_IMPL_CUDA_OPS_ARGMAX_IMPL_CUH_
 #define MINDSPORE_CCSRC_PLUGIN_DEVICE_GPU_KERNEL_CUDA_IMPL_CUDA_OPS_ARGMAX_IMPL_CUH_
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/cuda_common.h"
 
 #ifdef __cplusplus

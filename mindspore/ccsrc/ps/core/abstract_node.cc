@@ -491,7 +491,7 @@ std::pair<uint32_t, uint64_t> AbstractNode::CollectiveReceiveAsync(const NodeRol
     receive_messages_done_[pair_data] = true;
     MS_LOG(DEBUG) << "Receive data from rank id:" << rank_id << ", the rank request id is:" << rank_request_id;
   } else {
-    receive_callbacks_[pair_data] = [=]() mutable {
+      receive_callbacks_[pair_data] = [=]() mutable {
       auto res_output = received_data_[std::make_pair(rank_id, rank_request_id)];
       MS_EXCEPTION_IF_NULL(res_output);
       if (*output != nullptr) {

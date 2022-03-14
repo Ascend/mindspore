@@ -15,7 +15,7 @@
  */
 
 #include "unary_op_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T>
 __global__ void ExponentialKernel(const T *input, T *output, const size_t count) {
   for (size_t i = blockIdx.x * blockDim.x + threadIdx.x; i < (count); i += blockDim.x * gridDim.x) {

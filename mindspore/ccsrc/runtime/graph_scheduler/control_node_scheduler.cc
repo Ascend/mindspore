@@ -1163,7 +1163,7 @@ void ControlNodeScheduler::LinkControlArrowByAutoMonad(ControlActor *to_actor, c
       if (func_graphs.empty()) {
         MS_LOG(EXCEPTION) << "Failed to get funcgraph by call node:" << depend_node->DebugString();
       }
-      for (const auto func_graph : func_graphs) {
+      for (const auto &func_graph : func_graphs) {
         auto exit_actor_name = func_graph->ToString() + kExitActorNameSuffix;
         from_actor = FetchActor(exit_actor_name);
         MS_EXCEPTION_IF_NULL(from_actor);
@@ -1598,7 +1598,7 @@ bool ControlNodeScheduler::CheckActorValid(const ActorSet *actor_set) const {
 
   for (const auto &kernel_actor : actor_set->kernel_actors_) {
     std::string exit_actor_name = "";
-    for (const auto arrow : kernel_actor->output_data_arrows_) {
+    for (const auto &arrow : kernel_actor->output_data_arrows_) {
       MS_EXCEPTION_IF_NULL(arrow);
       if (arrow->to_op_id_.Name().find(kExitActorNameSuffix) == std::string::npos) {
         continue;

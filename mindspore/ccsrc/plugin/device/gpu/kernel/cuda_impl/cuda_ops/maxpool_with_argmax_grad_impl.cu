@@ -16,7 +16,7 @@
 
 #include <algorithm>
 #include "maxpool_with_argmax_grad_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/util.cuh"
 
 template <typename T, typename S>

@@ -77,7 +77,11 @@ if(BUILD_LITE)
 endif()
 
 add_library(mindspore_shared_lib_obj OBJECT ${MSLIB_SRC})
+target_link_libraries(mindspore_shared_lib_obj PRIVATE mindspore::protobuf mindspore::grpc++ mindspore::json
+                                                       mindspore::pybind11_module)
+
 add_library(mindspore_shared_lib SHARED $<TARGET_OBJECTS:mindspore_shared_lib_obj>)
+target_link_libraries(mindspore_shared_lib_obj PUBLIC mindspore::opencv_core $<$<BOOL:${ENABLE_GPU}>:CUDA::cuda_driver>)
 if(BUILD_LITE)
     target_link_libraries(mindspore_shared_lib PRIVATE $<TARGET_OBJECTS:_mindspore_transform_graph_ir_obj>)
     add_dependencies(mindspore_shared_lib _mindspore_transform_graph_ir_obj)
@@ -106,6 +110,7 @@ if(ENABLE_CPU)
 endif()
 
 if(USE_GLOG)
+    target_link_libraries(mindspore_shared_lib_obj PRIVATE mindspore::glog)
     target_link_libraries(mindspore_shared_lib PRIVATE mindspore::glog)
 endif()
 
@@ -142,13 +147,13 @@ if(ENABLE_D)
 endif()
 
 if(ENABLE_GPU)
-    target_link_libraries(mindspore_shared_lib PRIVATE  gpu_cuda_lib gpu_queue cublas cuda_ops
-                          ${CUDA_PATH}/lib64/libcurand.so
+    target_link_libraries(mindspore_shared_lib PRIVATE  gpu_cuda_lib gpu_queue CUDA::cublas cuda_ops
+                          CUDA::curand
                           ${CUDNN_LIBRARY_PATH}
-                          ${CUDA_PATH}/lib64/libcudart.so
-                          ${CUDA_PATH}/lib64/stubs/libcuda.so
-                          ${CUDA_PATH}/lib64/libcusolver.so
-                          ${CUDA_PATH}/lib64/libcufft.so)
+                          CUDA::cudart
+                          CUDA::cuda_driver
+                          CUDA::cusolver
+                          CUDA::cufft)
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")

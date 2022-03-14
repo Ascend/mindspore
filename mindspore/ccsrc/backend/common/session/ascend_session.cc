@@ -248,7 +248,7 @@ bool TensorNeedSync(const std::shared_ptr<KernelGraph> &kernel_graph, const AnfN
       }
       MS_EXCEPTION_IF_NULL(memcpy_nums);
       (*memcpy_nums)++;
-#if ((defined ENABLE_CPU) && (!defined _WIN32))
+#if ((defined ENABLE_CPU) && (defined ENABLE_D) && (!defined _WIN32))
       const std::string &param_name = parameter->fullname_with_scope();
       if (ps::ps_cache_instance.IsHashTable(param_name)) {
         return false;
@@ -347,7 +347,7 @@ void AscendSession::LoadInputData(const std::shared_ptr<KernelGraph> &kernel_gra
     }
     if (AnfAlgo::OutputAddrExist(input_node, 0) &&
         TensorNeedSync(kernel_graph, input_node, tensor, &device_memcpy_nums)) {
-#if ((defined ENABLE_CPU) && (!defined _WIN32))
+#if ((defined ENABLE_CPU) && (defined ENABLE_D) && (!defined _WIN32))
       const std::string &param_name = input_node->fullname_with_scope();
       if (ps::ps_cache_instance.IsHashTable(param_name)) {
         continue;

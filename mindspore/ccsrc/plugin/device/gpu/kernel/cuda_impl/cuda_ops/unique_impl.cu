@@ -23,7 +23,7 @@
 #include <thrust/unique.h>
 #include <algorithm>
 #include "unique_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T, typename S>
 int CalUnique(const T *input, int num_elements, S *input_index, S *sorted_index, T *output, S *index,

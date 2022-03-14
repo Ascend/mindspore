@@ -16,7 +16,7 @@
 
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/gatherv2.cuh"
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/embedding_lookup_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __global__ void SubOffset(T *indices, size_t size, int64_t offset) {

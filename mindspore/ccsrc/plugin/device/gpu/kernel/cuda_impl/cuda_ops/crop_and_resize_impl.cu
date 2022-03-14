@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/crop_and_resize_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 // for every position, first calculate position it mirrors from in the new padded array
 // adjust calculated position to origin dx array dimensions and copy value

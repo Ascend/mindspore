@@ -13,7 +13,9 @@ if(ENABLE_CPU)
     set_property(SOURCE ${MPI_COLLECTIVE_SRCS} PROPERTY COMPILE_DEFINITIONS
         SUBMODULE_ID=mindspore::SubModuleId::SM_DEVICE)
     add_library(mpi_collective SHARED ${MPI_COLLECTIVE_SRCS})
-    target_link_libraries(mpi_collective PRIVATE mindspore::ompi)
+    target_link_libraries(mpi_collective PRIVATE mindspore::ompi
+                                                 mindspore::pybind11_module
+                                                 $<$<BOOL:${USE_GLOG}>:mindspore::glog>)
     endif()
 
     if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -23,4 +25,12 @@ if(ENABLE_CPU)
     set_property(SOURCE ${HARDWARE_CPU_SRC_LIST} PROPERTY
             COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_DEVICE)
     add_library(_mindspore_plugin_device_cpu_hal_hardware_obj OBJECT ${HARDWARE_CPU_SRC_LIST})
+    target_link_libraries(_mindspore_plugin_device_cpu_hal_hardware_obj PUBLIC mindspore::protobuf
+                                                                               mindspore::flatbuffers
+                                                                               mindspore::grpc++
+                                                                               mindspore::json
+                                                                               mindspore::pybind11_module
+                                                                               $<$<BOOL:${USE_GLOG}>:mindspore::glog>
+                                                                               $<$<BOOL:${ENABLE_GPU}>:CUDA::cuda_driver>
+                                                                               $<$<BOOL:${ENABLE_GPU}>:CUDA::cupti>)
 endif()

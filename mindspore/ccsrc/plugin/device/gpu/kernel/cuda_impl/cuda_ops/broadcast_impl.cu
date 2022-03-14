@@ -17,7 +17,7 @@
 #include <vector>
 #include <iostream>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/broadcast_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 // Basic function
 template <typename T>

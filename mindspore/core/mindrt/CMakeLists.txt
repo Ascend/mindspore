@@ -16,3 +16,6 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 endif()
 
 add_library(mindrt_mid OBJECT ${MINDRT_SRC})
+if(USE_GLOG)
+   target_link_libraries(mindrt_mid PUBLIC mindspore::glog)
+endif()

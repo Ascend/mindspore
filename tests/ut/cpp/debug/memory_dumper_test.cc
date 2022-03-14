@@ -30,7 +30,7 @@ class TestMemoryDumper : public UT::Common {
 };
 
 TEST_F(TestMemoryDumper, test_DumpToFileAbsPath) {
-  int len = 1000;
+  constexpr int len = 1000;
   int data[len] = {0};
   for (uint32_t i = 0; i < len; i++) {
     data[i] = i % 10;
@@ -42,8 +42,8 @@ TEST_F(TestMemoryDumper, test_DumpToFileAbsPath) {
   ASSERT_EQ(ret, true);
 
   int fd = open((filename + ".npy").c_str(), O_RDONLY);
-  int header_size = 32;
-  int npylen = len + header_size;
+  constexpr int header_size = 32;
+  constexpr int npylen = len + header_size;
   int readBack[npylen] = {0};
   int readSize = read(fd, readBack, npylen * sizeof(int));
   (void)close(fd);
@@ -52,7 +52,7 @@ TEST_F(TestMemoryDumper, test_DumpToFileAbsPath) {
   ret = true;
   for (uint32_t i = 0; i < len; i++) {
     // Skip the size of npy header.
-    if (data[i] != readBack[i+header_size]) {
+    if (data[i] != readBack[i + header_size]) {
       ret = false;
       break;
     }
@@ -65,14 +65,14 @@ TEST_F(TestMemoryDumper, test_DumpToFileAbsPath) {
 }
 
 TEST_F(TestMemoryDumper, test_DumpToFileRelativePath) {
-  int len = 1000;
+  constexpr int len = 1000;
   int data[len] = {0};
   for (uint32_t i = 0; i < len; i++) {
     data[i] = i % 10;
   }
 
   int ret;
-   const std::string filename = "../../dumpToFileTestFile";
+  const std::string filename = "../../dumpToFileTestFile";
   ret = DumpJsonParser::DumpToFile(filename, data, len * sizeof(int), ShapeVector{100, 10}, kNumberTypeInt32);
   ASSERT_EQ(ret, false);
 }
@@ -97,7 +97,7 @@ TEST_F(TestMemoryDumper, test_DumpToFileNotExistDir) {
   ret = true;
   for (uint32_t i = 0; i < len; i++) {
     // Skip the size of npy header.
-    if (data[i] != readBack[i+1]) {
+    if (data[i] != readBack[i + 1]) {
       ret = false;
       break;
     }

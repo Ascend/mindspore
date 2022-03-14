@@ -75,3 +75,9 @@ if(ENABLE_PYTHON)
 endif()
 
 add_library(engine-datasetops-source OBJECT ${DATASET_ENGINE_DATASETOPS_SOURCE_SRC_FILES})
+target_link_libraries(engine-datasetops-source PUBLIC core_headers mindspore::eigen mindspore::protobuf
+                                                      mindspore::pybind11_module mindspore::json mindspore::jpeg_turbo
+                                                      mindspore::tinyxml2)
+if(USE_GLOG)
+     target_link_libraries(engine-datasetops-source PUBLIC mindspore::glog)
+endif()

@@ -19,7 +19,13 @@
 #include <memory>
 #include <vector>
 #include "Eigen/Core"
-#include "Eigen/src/Core/arch/CUDA/Half.h"
+#if __has_include("Eigen/src/Core/arch/CUDA/Half.h")
+#  include "Eigen/src/Core/arch/CUDA/Half.h"
+#elif __has_include("Eigen/src/Core/arch/GPU/Half.h")
+#  include "Eigen/src/Core/arch/GPU/Half.h"
+#elif __has_include("Eigen/src/Core/arch/Default/Half.h")
+#  include "Eigen/src/Core/arch/Default/Half.h"
+#endif
 #include "abstract/utils.h"
 #include "plugin/device/cpu/hal/device/cpu_common.h"
 #include "pybind_api/ir/tensor_py.h"

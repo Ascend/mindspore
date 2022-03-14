@@ -36,6 +36,9 @@ add_library(engine-cache-client OBJECT
     cache_client.cc
     cache_fbb.cc
     cache_request.cc)
+target_link_libraries(engine-cache-client PUBLIC core_headers mindspore::protobuf mindspore::flatbuffers
+                                                 mindspore::grpc++ mindspore::json mindspore::pybind11_module
+                                                 mindspore::jpeg_turbo $<$<BOOL:${USE_GLOG}>:mindspore::glog>)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-delete-abstract-non-virtual-dtor")
@@ -61,6 +64,10 @@ if(ENABLE_CACHE)
       cache_server.cc
       storage_manager.cc
       storage_container.cc)
+  target_link_libraries(engine-cache-server PUBLIC core_headers mindspore::protobuf mindspore::flatbuffers
+                                                   mindspore::grpc++ mindspore::pybind11_module mindspore::json
+                                                   $<$<BOOL:${USE_GLOG}>:mindspore::glog>
+                                                   $<$<BOOL:${ENABLE_GPU}>:CUDA::cudart>)
 
   if(ENABLE_ASAN)
       target_compile_options(engine-cache-server PRIVATE -fsanitize=address)
@@ -71,7 +78,7 @@ if(ENABLE_CACHE)
 
   add_executable(cache_server cache_main.cc)
   if(ENABLE_GPU)
-    target_link_libraries(cache_server
+    target_link_libraries(cache_server PUBLIC
         engine-cache-server
         _c_dataengine
         _c_mindrecord
@@ -85,9 +92,10 @@ if(ENABLE_CACHE)
         pthread
         -ldl
         -Wl,--no-as-needed
-        mindspore::grpc++)
+        mindspore::grpc++
+        -Wl,--as-needed)
   else()
-    target_link_libraries(cache_server
+    target_link_libraries(cache_server PUBLIC
         mindspore
         engine-cache-server
         _c_dataengine
@@ -99,39 +107,45 @@ if(ENABLE_CACHE)
         pthread
         -ldl)
     if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-      target_link_libraries(cache_server mindspore::grpc++)
+      target_link_libraries(cache_server PUBLIC mindspore::grpc++)
     else()
-      target_link_libraries(cache_server
+      target_link_libraries(cache_server PUBLIC
           -Wl,--no-as-needed
           mindspore::grpc++
           -Wl,--as-needed)
     endif()
   endif()
+  target_link_libraries(cache_server PUBLIC core_headers $<$<BOOL:${ENABLE_GPU}>:CUDA::cudart>)
 
   if(USE_GLOG)
-    target_link_libraries(cache_server mindspore::glog)
+    target_link_libraries(cache_server PUBLIC mindspore::glog)
   endif()
 
   if(NUMA_FOUND)
-    target_link_libraries(cache_server numa)
+    target_link_libraries(cache_server PUBLIC numa)
   endif()
 
   add_executable(cache_admin cache_admin.cc cache_admin_arg.cc)
-  target_link_libraries(cache_admin _c_dataengine _c_mindrecord ${PYTHON_LIBRARIES} pthread -ldl)
+  target_link_libraries(cache_admin PUBLIC _c_dataengine
+                                           _c_mindrecord
+                                           core_headers
+                                           mindspore::flatbuffers
+                                           mindspore::grpc++
+                                           mindspore::json
+                                           mindspore::pybind11_module
+                                           $<$<BOOL:${USE_GLOG}>:mindspore::glog>
+                                           $<$<BOOL:${ENABLE_GPU}>:CUDA::cudart>
+                                           ${PYTHON_LIBRARIES} pthread -ldl)
   if(ENABLE_TDTQUE)
-    target_link_libraries(cache_admin
+    target_link_libraries(cache_admin PUBLIC
         -Wl,--start-group mindspore::protobuf mindspore_core mindspore_shared_lib ${ACL_TDT_CHANNEL} -Wl,--end-group)
   else()
     if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-      target_link_libraries(cache_admin mindspore::protobuf mindspore_core mindspore_shared_lib)
+      target_link_libraries(cache_admin PUBLIC mindspore::protobuf mindspore_core mindspore_shared_lib)
     else()
-      target_link_libraries(cache_admin
+      target_link_libraries(cache_admin PUBLIC
           -Wl,--start-group mindspore::protobuf mindspore_core mindspore_shared_lib -Wl,--end-group)
     endif()
-  endif()
-
-  if(USE_GLOG)
-    target_link_libraries(cache_admin mindspore::glog)
   endif()
 
   add_dependencies(engine-cache-server generated_engine_files)

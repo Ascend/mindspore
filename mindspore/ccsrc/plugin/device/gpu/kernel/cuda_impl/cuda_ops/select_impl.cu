@@ -16,9 +16,9 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include <include/cuda_runtime.h>
+#include <cuda_runtime.h>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/select_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __global__ void Select(const size_t size, const bool* cond, const T* input_x, const T* input_y, T* output) {

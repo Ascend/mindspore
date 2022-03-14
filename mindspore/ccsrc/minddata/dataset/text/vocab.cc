@@ -47,7 +47,7 @@ std::vector<WordIdType> Vocab::Lookup(const std::vector<WordType> &words) const 
 WordType Vocab::ReverseLookup(const WordIdType &id) {
   // lazy initialization, since I think it's not common use but waste memory
   if (id2word_.empty()) {
-    for (const auto [word_, id_] : word2id_) {
+    for (const auto& [word_, id_] : word2id_) {
       id2word_[id_] = word_;
     }
   }
@@ -58,7 +58,7 @@ WordType Vocab::ReverseLookup(const WordIdType &id) {
 std::vector<WordType> Vocab::ReverseLookup(const std::vector<WordIdType> &ids) {
   // lazy initialization, since I think it's not common use but waste memory
   if (id2word_.empty()) {
-    for (const auto [word_, id_] : word2id_) {
+    for (const auto& [word_, id_] : word2id_) {
       id2word_[id_] = word_;
     }
   }

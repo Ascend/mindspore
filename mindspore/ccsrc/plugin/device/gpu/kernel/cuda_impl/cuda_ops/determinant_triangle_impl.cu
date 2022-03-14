@@ -15,7 +15,7 @@
  */ 
 
 #include "determinant_triangle_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T>
 __global__ void DetTriangleKernel(T *input, T *output, size_t matrix_n_, size_t count) {
   for (size_t i = blockIdx.x * blockDim.x + threadIdx.x; i < (count); i += blockDim.x * gridDim.x) {

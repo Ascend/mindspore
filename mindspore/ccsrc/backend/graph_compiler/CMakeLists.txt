@@ -4,6 +4,11 @@ include_directories(${CMAKE_SOURCE_DIR}/mindspore/core/mindrt/src)
 file(GLOB_RECURSE _GRAPH_COMPILER_SRC_LIST RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cc")
 set_property(SOURCE ${_GRAPH_COMPILER_SRC_LIST} PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_VM)
 add_library(_mindspore_backend_graph_compiler_obj OBJECT ${_GRAPH_COMPILER_SRC_LIST})
+target_link_libraries(_mindspore_backend_graph_compiler_obj PRIVATE mindspore::protobuf
+                                                                    mindspore::grpc++
+                                                                    mindspore::pybind11_module
+                                                                    mindspore::json
+                                                                    $<$<BOOL:${USE_GLOG}>:mindspore::glog>)
 
 if("${ENABLE_HIDDEN}" STREQUAL "OFF")
     string(REPLACE " -Werror " " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")

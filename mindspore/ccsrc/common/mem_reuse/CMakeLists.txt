@@ -13,3 +13,5 @@ endif()
 set_property(SOURCE ${_PREACTIVATE_SRC_LIST} PROPERTY COMPILE_DEFINITIONS
   SUBMODULE_ID=mindspore::SubModuleId::SM_PRE_ACT)
 add_library(_mindspore_common_mem_reuse_obj OBJECT ${_PREACTIVATE_SRC_LIST})
+target_link_libraries(_mindspore_common_mem_reuse_obj PRIVATE mindspore::protobuf mindspore::grpc++ mindspore::json
+                                                              $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

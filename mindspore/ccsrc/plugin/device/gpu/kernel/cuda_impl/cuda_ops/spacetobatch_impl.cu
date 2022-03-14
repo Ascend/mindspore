@@ -15,7 +15,7 @@
  */
 #include <cuda_runtime.h>
 #include "spacetobatch_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __global__ void SpaceToBatch(const size_t size, const T *input, const size_t in,

@@ -18,7 +18,7 @@
 #include <stdint.h>
 #include <cuda_runtime.h>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/concatv2_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T>
 __global__ void Concat(const size_t size, const int input_num, const int all_size_before_axis, const int all_size_axis,
                        int *len_axis, T **inputs, T *output) {

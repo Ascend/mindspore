@@ -16,7 +16,7 @@
 
 #include <algorithm>
 #include "maxpool_with_argmax_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T, typename S>
 __global__ void MaxPoolWithArgmax(const T* input,
                                   const int n,

@@ -907,8 +907,9 @@ void AkgKernelJsonGenerator::GenParallelJson(const std::vector<AnfNodePtr> &anf_
   auto output_index = GetOutputIndex(anf_nodes, input_list, output_list);
   for (size_t i = 0; i < output_index.size(); ++i) {
     auto [tmp_output, tmp_output_index] = output_index[i];
-    bool found = std::any_of(input_list.cbegin(), input_list.cend(),
-                             [&tmp_output](const AnfNodePtr &in) { return tmp_output == in; });
+    bool found =
+      std::any_of(input_list.cbegin(), input_list.cend(),
+                  [&tmp_output = std::get<0>(output_index[i])](const AnfNodePtr &in) { return tmp_output == in; });
     if (!found) {
       auto tcnode = tmp_output->cast<CNodePtr>();
       if (tcnode == nullptr) {

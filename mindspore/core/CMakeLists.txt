@@ -48,7 +48,9 @@ endif()
 
 set_property(SOURCE ${CORE_SRC_LIST} PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_CORE)
 add_library(core_obj OBJECT ${CORE_SRC_LIST})
+target_link_libraries(core_obj PRIVATE mindspore::protobuf mindspore::json)
 add_library(core_proto_obj OBJECT ${PROTO_SRCS})
+target_link_libraries(core_proto_obj PRIVATE mindspore::protobuf)
 add_library(mindspore_core SHARED $<TARGET_OBJECTS:core_obj> $<TARGET_OBJECTS:core_proto_obj>)
 target_link_libraries(mindspore_core PRIVATE mindspore::protobuf securec)
 
@@ -68,6 +70,8 @@ if(NOT(BUILD_LITE))
 endif()
 
 if(USE_GLOG)
+  target_link_libraries(core_obj PRIVATE mindspore::glog)
+  target_link_libraries(core PRIVATE mindspore::glog)
   target_link_libraries(mindspore_core PRIVATE mindspore::glog)
 endif()
 
@@ -77,4 +81,3 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
         add_compile_definitions(ENABLE_OPENSSL)
     endif()
 endif()
-

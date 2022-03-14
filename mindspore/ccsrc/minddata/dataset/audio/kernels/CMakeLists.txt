@@ -45,4 +45,5 @@ add_library(audio-kernels OBJECT
         treble_biquad_op.cc
         vol_op.cc
         )
-
+target_link_libraries(audio-kernels PUBLIC core_headers mindspore::eigen mindspore::protobuf mindspore::pybind11_module
+                                           mindspore::json $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

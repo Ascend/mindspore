@@ -100,9 +100,12 @@ mindspore_add_pkg(
   TARGET_ALIAS mindspore::grpc++ gRPC::grpc++)
 
 # modify mindspore macro define
-add_compile_definitions(grpc=mindspore_grpc)
-add_compile_definitions(grpc_impl=mindspore_grpc_impl)
-add_compile_definitions(grpc_core=mindspore_grpc_core)
+
+# add_compile_definitions(grpc=mindspore_grpc)
+
+# add_compile_definitions(grpc_impl=mindspore_grpc_impl)
+
+# add_compile_definitions(grpc_core=mindspore_grpc_core)
 
 function(ms_grpc_generate c_var h_var)
   if(NOT ARGN)

@@ -19,7 +19,7 @@
 #include <stdint.h>
 #include <algorithm>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/slice_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __global__ void Slice1D(const size_t s1, const size_t l1, const size_t d1, const T *input, T *output) {
@@ -272,7 +272,6 @@ __global__ void StridedSliceGradKernel(const size_t b0, const size_t b1, const s
 
     size_t input_idx = (i * s0 + b0) * i1 * i2 * i3 * i4 * i5 * i6 + (j * s1 + b1) * i2 * i3 * i4 * i5 * i6 +
                        (k * s2 + b2) * i3 * i4 * i5 * i6 + (l * s3 + b3) * i4 * i5 * i6 + (m * s4 + b4) * i5 * i6 +
-                       (n * s5 + b5) * i6 + (o * s6 + b6);
                        (n * s5 + b5) * i6 + (o * s6 + b6);
     dx[input_idx] = dy[pos];
   }

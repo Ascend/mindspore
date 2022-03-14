@@ -84,7 +84,7 @@ class CachePool : public Service {
 
   using data_index = BPlusTree<int64_t, DataLocator>;
   using key_type = data_index::key_type;
-  using bl_alloc_type = typename value_allocator::template rebind<DataLocator>::other;
+    using bl_alloc_type = typename std::allocator_traits<value_allocator>::template rebind_alloc<DataLocator>;
 
   /// \brief Simple statistics returned from CachePool like how many elements are cached in memory and
   /// how many elements are spilled to disk.

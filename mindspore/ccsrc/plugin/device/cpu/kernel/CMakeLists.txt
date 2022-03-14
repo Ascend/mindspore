@@ -58,4 +58,12 @@ set_property(SOURCE ${CPU_SRC_LIST} ${AKG_CPU_SRC_LIST}
         PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_KERNEL)
 if(ENABLE_CPU)
     add_library(_mindspore_plugin_device_cpu_kernel_obj OBJECT ${CPU_SRC_LIST} ${AKG_CPU_SRC_LIST})
+    target_link_libraries(_mindspore_plugin_device_cpu_kernel_obj PUBLIC mindspore::eigen
+                                                                         mindspore::protobuf
+                                                                         mindspore::grpc++
+                                                                         mindspore::flatbuffers
+                                                                         mindspore::json
+                                                                         mindspore::pybind11_module
+                                                                         mindspore::dnnl
+                                                                         $<$<BOOL:${USE_GLOG}>:mindspore::glog>)
 endif()

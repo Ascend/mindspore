@@ -15,7 +15,7 @@
  */
 
 #include "equalcount_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T>
 __global__ void EqualCount(const int size, const T* input1, const T* input2, T* output) {
   T equal_count = 0;

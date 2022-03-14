@@ -225,7 +225,7 @@ else()
     else()
         target_link_libraries(_c_dataengine PRIVATE -ldl ${SECUREC_LIBRARY})
     endif()
-    target_link_libraries(_c_dataengine PUBLIC mindspore::sentencepiece)
+    target_link_libraries(_c_dataengine PUBLIC $<$<BOOL:${ENABLE_MINDDATA}>:mindspore::sentencepiece>)
 endif()
 
 target_link_libraries(_c_dataengine PUBLIC mindspore::jpeg_turbo mindspore::turbojpeg mindspore::opencv_core
@@ -234,8 +234,8 @@ target_link_libraries(_c_dataengine PUBLIC mindspore::jpeg_turbo mindspore::turb
 if(ENABLE_GPUQUE)
     target_link_libraries(_c_dataengine PRIVATE gpu_queue
                           ${CUDNN_LIBRARY_PATH}
-                          ${CUDA_PATH}/lib64/libcudart.so
-                          ${CUDA_PATH}/lib64/stubs/libcuda.so)
+                          CUDA::cudart
+                          CUDA::cuda_driver)
 endif()
 
 if(ENABLE_TDTQUE)

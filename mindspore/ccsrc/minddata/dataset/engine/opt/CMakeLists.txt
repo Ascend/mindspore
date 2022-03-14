@@ -25,3 +25,6 @@ if(ENABLE_PYTHON)
 endif()
 
 add_library(engine-opt OBJECT ${DATASET_ENGINE_OPT_SRC_FILES})
+target_link_libraries(engine-opt PUBLIC core_headers mindspore::flatbuffers mindspore::grpc++ mindspore::json
+                                        mindspore::pybind11_module mindspore::jpeg_turbo
+                                        $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

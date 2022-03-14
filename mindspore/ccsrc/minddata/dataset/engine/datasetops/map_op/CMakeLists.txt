@@ -8,3 +8,8 @@ set(DATASET_ENGINE_DATASETOPS_MAPOP_SRC_FILES
   )
 
 add_library(engine-datasetops-mapop OBJECT ${DATASET_ENGINE_DATASETOPS_MAPOP_SRC_FILES})
+target_link_libraries(engine-datasetops-mapop PUBLIC core_headers mindspore::protobuf mindspore::pybind11_module
+                                                     mindspore::json)
+if(USE_GLOG)
+     target_link_libraries(engine-datasetops-mapop PUBLIC mindspore::glog)
+endif()

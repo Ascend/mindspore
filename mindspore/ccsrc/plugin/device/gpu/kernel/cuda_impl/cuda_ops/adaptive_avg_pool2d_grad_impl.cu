@@ -15,7 +15,7 @@
  */
 
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/adaptive_avg_pool2d_grad_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 __device__ inline uint start_index(uint a, uint b, uint c) {
   return floorf(__uint2float_rn(a * c) / __uint2float_rn(b));

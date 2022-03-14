@@ -18,7 +18,7 @@
 #include <stdint.h>
 #include <cuda_runtime.h>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/cast_all_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T, typename S>
 __global__ void CastAll(T** inputs, S** output, const size_t num, const size_t *size) {

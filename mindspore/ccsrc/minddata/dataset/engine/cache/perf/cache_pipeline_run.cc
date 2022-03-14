@@ -286,7 +286,7 @@ Status CachePipelineRun::WriterWorkerEntry(int32_t worker_id) {
       for (auto id : keys) {
         TensorRow row;
         std::shared_ptr<Tensor> element;
-        RETURN_IF_NOT_OK(Tensor::CreateEmpty(shape, col_desc->type(), &element));
+        RETURN_IF_NOT_OK(Tensor::CreateEmpty(shape, col_desc->Type(), &element));
         row.setId(id);
         // CreateEmpty allocates the memory but in virtual address. Let's commit the memory
         // so we can get an accurate timing.

@@ -90,9 +90,13 @@ void DenseOptimInfo::Accumulate(const Values &values, const Lengths &lengths) {
   }
   float *grad_data = const_cast<float *>(values.data()) + grad_offset;
   MS_EXCEPTION_IF_NULL(grad_data);
+#ifdef MS_PATCHED_GLOG_NAME
 #define google mindspore_private
+#endif  // MS_PATCHED_GLOG_NAME
   CHECK_EQ(size, IntToSize(lengths[grad_index]));
+#ifdef MS_PATCHED_GLOG_NAME
 #undef google
+#endif  // MS_PATCHED_GLOG_NAME
   for (size_t i = 0; i < size; i++) {
     accum_grad_data[i] += grad_data[i];
   }

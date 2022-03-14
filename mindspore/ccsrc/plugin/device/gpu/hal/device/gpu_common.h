@@ -26,7 +26,7 @@
 #include <sstream>
 #include "utils/log_adapter.h"
 #include "utils/trace_base.h"
-#include "include/curand.h"
+#include "curand.h"
 
 namespace mindspore {
 namespace device {

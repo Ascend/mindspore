@@ -15,6 +15,7 @@
  */
 #include <memory>
 #include "common/common_test.h"
+#include "common/opskernel/ops_kernel_info_store.h"
 #define private public
 #include "plugin/device/ascend/hal/device/ge_runtime/model_runner.h"
 #include "plugin/device/ascend/hal/device/ge_runtime/runtime_model.h"
@@ -33,7 +34,6 @@
 #include "plugin/device/ascend/hal/device/ge_runtime/task/stream_switch_task.h"
 #include "plugin/device/ascend/hal/device/ge_runtime/task/tbe_task.h"
 #undef private
-#include "common/opskernel/ops_kernel_info_store.h"
 
 using namespace mindspore::ge::model_runner;
 using namespace testing;

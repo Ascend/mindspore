@@ -71,6 +71,9 @@ add_library(kernels-image OBJECT
     resize_cubic_op.cc
     vertical_flip_op.cc
     )
+target_link_libraries(kernels-image PUBLIC core_headers mindspore::protobuf mindspore::pybind11_module
+                                           mindspore::json mindspore::jpeg_turbo $<$<BOOL:${USE_GLOG}>:mindspore::glog>)
+
 if(ENABLE_ACL)
     add_dependencies(kernels-image kernels-soft-dvpp-image kernels-dvpp-image)
 else()

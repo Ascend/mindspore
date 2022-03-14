@@ -36,4 +36,9 @@ if(ENABLE_PYTHON)
 endif()
 
 add_library(engine-datasetops OBJECT ${DATASET_ENGINE_DATASETOPS_SRC_FILES})
+target_link_libraries(engine-datasetops PUBLIC core_headers mindspore::protobuf mindspore::flatbuffers mindspore::json
+                                               mindspore::grpc++ mindspore::pybind11_module
+                                               $<$<BOOL:${USE_GLOG}>:mindspore::glog>
+                                               $<$<BOOL:${ENABLE_MINDDATA}>:mindspore::sentencepiece>
+                                               $<$<BOOL:${ENABLE_GPU}>:CUDA::cudart>)
 add_dependencies(engine-datasetops engine-cache-client)

@@ -20,8 +20,8 @@
 #include <thrust/reduce.h>
 #include <thrust/system/cuda/execution_policy.h>
 #include "batchnorm_grad_impl.cuh"
-#include "include/cuda_runtime.h"
-#include "include/cuda_fp16.h"
+#include "cuda_runtime.h"
+#include "cuda_fp16.h"
 
 const int kWarpSize = 32;
 const int kBlockSize = 1024;

@@ -13,3 +13,6 @@ endif()
 set_property(SOURCE ${_COMMON_ALL_SRC_FILES} PROPERTY COMPILE_DEFINITIONS
   SUBMODULE_ID=mindspore::SubModuleId::SM_COMMON)
 add_library(_mindspore_common_obj OBJECT ${_COMMON_ALL_SRC_FILES})
+if(USE_GLOG)
+     target_link_libraries(_mindspore_common_obj PUBLIC mindspore::glog)
+endif()

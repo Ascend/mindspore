@@ -68,6 +68,7 @@
 #include <cstdio>
 #include <vector>
 #include <string>
+#define GLOG_NO_ABBREVIATED_SEVERITIES
 #include "glog/logging.h"
 
 template <typename... Args>

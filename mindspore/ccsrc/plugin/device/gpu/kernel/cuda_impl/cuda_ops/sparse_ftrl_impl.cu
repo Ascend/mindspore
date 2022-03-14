@@ -15,7 +15,7 @@
  */
 
 #include "sparse_ftrl_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __device__ __forceinline__ T PowFunc(T x, T y) {

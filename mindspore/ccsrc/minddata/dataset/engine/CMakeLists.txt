@@ -38,9 +38,16 @@ if(ENABLE_PYTHON)
 endif()
 
 add_library(engine OBJECT ${SRC_FILES_LIST})
+target_link_libraries(engine PUBLIC core_headers
+                                    mindspore::protobuf
+                                    mindspore::json
+                                    mindspore::jpeg_turbo
+                                    $<$<BOOL:${USE_GLOG}>:mindspore::glog>
+                                    $<$<BOOL:${ENABLE_MINDDATA}>:mindspore::sentencepiece>
+                                    $<$<BOOL:${ENABLE_GPU}>:CUDA::cudart>)
 
 if(ENABLE_PYTHON)
-    target_include_directories(engine PRIVATE ${pybind11_INCLUDE_DIRS})
+    target_link_libraries(engine PRIVATE pybind11::headers)
 endif()
 
 add_dependencies(engine

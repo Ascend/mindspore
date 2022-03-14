@@ -3,3 +3,8 @@ file(GLOB_RECURSE BUILDER_SRC_LIST RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 
 set_property(SOURCE ${BUILDER_SRC_LIST} PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_DEVICE)
 add_library(_mindspore_runtime_op_builder_obj OBJECT ${BUILDER_SRC_LIST})
+target_link_libraries(_mindspore_runtime_op_builder_obj PRIVATE mindspore::protobuf
+                                                                mindspore::grpc++
+                                                                mindspore::json
+                                                                mindspore::pybind11_module
+                                                                $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

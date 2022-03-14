@@ -70,7 +70,7 @@ void DumpAllGraphs(NotNull<KernelGraphPtr> kg, std::set<KernelGraphPtr> *memo) {
   if (memo->find(kg) != memo->end()) {
     return;
   }
-  memo->insert(kg);
+  memo->insert(kg.get());
   std::string file_name = "ascend_auto_monad_" + std::to_string(kg->graph_id()) + ".ir";
   DumpIR(file_name, kg.get());
   for (auto &child : kg->child_graph_order()) {

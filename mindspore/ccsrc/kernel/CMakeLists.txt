@@ -22,3 +22,5 @@ endif()
 
 set_property(SOURCE ${KERNEL_SRC_LIST} PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_KERNEL)
 add_library(_mindspore_kernel_obj OBJECT ${KERNEL_SRC_LIST})
+target_link_libraries(_mindspore_kernel_obj PUBLIC mindspore::json mindspore::pybind11_module
+                                                   $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

@@ -18,7 +18,7 @@
 #include <stdint.h>
 #include <cuda_runtime.h>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/pack.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T>
 __global__ void Pack(const size_t size, const size_t input_num, const size_t dims_behind_axis, T** inputs, T* output) {
   for (size_t pos = blockIdx.x * blockDim.x + threadIdx.x; pos < (size); pos += blockDim.x * gridDim.x) {

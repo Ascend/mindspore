@@ -36,4 +36,9 @@ set_property(SOURCE ${GPU_SRC_LIST} ${AKG_GPU_SRC_LIST}
         PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_KERNEL)
 if(ENABLE_GPU)
     add_library(_mindspore_plugin_device_gpu_kernel_obj OBJECT ${GPU_SRC_LIST} ${AKG_GPU_SRC_LIST})
+    target_link_libraries(_mindspore_plugin_device_gpu_kernel_obj PUBLIC mindspore::json
+                                                                         mindspore::pybind11_module
+                                                                         $<$<BOOL:${USE_GLOG}>:mindspore::glog>
+                                                                         CUDA::cudart
+                                                                         CUDA::cupti)
 endif()

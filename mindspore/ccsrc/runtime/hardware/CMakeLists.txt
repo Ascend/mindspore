@@ -7,3 +7,6 @@ endif()
 
 set_property(SOURCE ${HARDWARE_SRC_LIST} PROPERTY SUBMODULE_ID=mindspore::SubModuleId::SM_DEVICE)
 add_library(_mindspore_runtime_hardware_obj OBJECT ${HARDWARE_SRC_LIST})
+target_link_libraries(_mindspore_runtime_hardware_obj PUBLIC mindspore::json
+                                                             mindspore::pybind11_module
+                                                             $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

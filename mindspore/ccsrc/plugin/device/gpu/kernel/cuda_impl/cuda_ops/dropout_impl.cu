@@ -16,8 +16,8 @@
 
 #include <stdint.h>
 #include "dropout_impl.cuh"
-#include "include/cuda_runtime.h"
-#include "include/cuda_fp16.h"
+#include "cuda_runtime.h"
+#include "cuda_fp16.h"
 template <typename T>
 __global__ void DropoutForwardKernel(const T *input, T *mask, T *output, float *mask_f, size_t num_count,
                                      float keep_prob) {

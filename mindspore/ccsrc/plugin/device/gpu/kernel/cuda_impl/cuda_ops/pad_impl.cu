@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/pad_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 // For internal OP use, not user facing
 template <typename T>

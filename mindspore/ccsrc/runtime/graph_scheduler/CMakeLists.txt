@@ -13,3 +13,8 @@ endif()
 set_property(SOURCE ${GRAPH_SCHEDULER_SRC_LIST}
   PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_RUNTIME_FRAMEWORK)
 add_library(_mindspore_runtime_graph_scheduler_obj OBJECT ${GRAPH_SCHEDULER_SRC_LIST})
+target_link_libraries(_mindspore_runtime_graph_scheduler_obj PRIVATE mindspore::protobuf
+                                                                     mindspore::grpc++
+                                                                     mindspore::json
+                                                                     mindspore::pybind11_module
+                                                                     $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

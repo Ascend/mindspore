@@ -431,7 +431,7 @@ __device__ static inline float MsAtomicMul(float *address, const float val) {
   unsigned int assumed;                                    // NOLINT
   do {
     assumed = old;
-    old = atomicCAS(address_as_ui, assumed, __float_as_uint(val * uint_as_float(assumed)));
+    old = atomicCAS(address_as_ui, assumed, __float_as_uint(val * __uint_as_float(assumed)));
   } while (assumed != old);  // NOLINT
   return __longlong_as_double(old);
 }
@@ -514,7 +514,7 @@ __device__ static inline float MsAtomicDiv(float *address, const float val) {
   unsigned int assumed;                                    // NOLINT
   do {
     assumed = old;
-    old = atomicCAS(address_as_ui, assumed, __float_as_uint(uint_as_float(assumed) / val));
+    old = atomicCAS(address_as_ui, assumed, __float_as_uint(__uint_as_float(assumed) / val));
   } while (assumed != old);  // NOLINT
   return __longlong_as_double(old);
 }

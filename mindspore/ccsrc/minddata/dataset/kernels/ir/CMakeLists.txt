@@ -8,3 +8,5 @@ set(DATASET_KERNELS_IR_SRC_FILES
         )
 
 add_library(kernels-ir OBJECT ${DATASET_KERNELS_IR_SRC_FILES})
+target_link_libraries(kernels-ir PUBLIC core_headers mindspore::protobuf mindspore::pybind11_module
+                                        mindspore::json $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

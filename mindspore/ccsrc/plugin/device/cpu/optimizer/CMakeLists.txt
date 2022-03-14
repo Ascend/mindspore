@@ -15,4 +15,6 @@ set_property(SOURCE ${_CPU_SRC_LIST} PROPERTY COMPILE_DEFINITIONS
   SUBMODULE_ID=mindspore::SubModuleId::SM_PRE_ACT)
 if(ENABLE_CPU)
     add_library(_mindspore_plugin_device_cpu_optimizer_obj OBJECT ${_CPU_SRC_LIST})
+    target_link_libraries(_mindspore_plugin_device_cpu_optimizer_obj PUBLIC mindspore::json
+                                                                            $<$<BOOL:${USE_GLOG}>:mindspore::glog>)
 endif()

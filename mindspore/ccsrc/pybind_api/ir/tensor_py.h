@@ -63,7 +63,6 @@ struct npy_scalar_caster {
     return scalar.release();
   }
 };
-
 template <>
 struct npy_format_descriptor<float16> {
   static constexpr auto name = "float16";
@@ -71,7 +70,7 @@ struct npy_format_descriptor<float16> {
     handle ptr = npy_api::get().PyArray_DescrFromType_(NPY_FLOAT16);
     return reinterpret_borrow<pybind11::dtype>(ptr);
   }
-  virtual ~npy_format_descriptor<float16>() {}
+  virtual ~npy_format_descriptor() {}
 };
 
 template <>

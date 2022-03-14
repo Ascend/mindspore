@@ -8,13 +8,15 @@ set_property(SOURCE ${CUDA_OPS_SRC_LIST} PROPERTY COMPILE_DEFINITIONS SUBMODULE_
 if(ENABLE_GPU)
     add_library(cuda_common_obj OBJECT cuda_common.cc)
     target_compile_features(cuda_common_obj PRIVATE cxx_std_17)
+    target_link_libraries(cuda_common_obj PUBLIC $<$<BOOL:${USE_GLOG}>:mindspore::glog> CUDA::cudart)
     add_library(cuda_ops SHARED ${CUDA_OPS_SRC_LIST} $<TARGET_OBJECTS:cuda_common_obj>)
+    target_link_libraries(cuda_ops PUBLIC CUDA::cudart)
     message("add gpu lib to cuda_ops")
-    target_link_libraries(cuda_ops mindspore_core cublas
-            ${CUDA_PATH}/lib64/libcurand.so
+    target_link_libraries(cuda_ops PUBLIC mindspore_core CUDA::cublas
+            CUDA::curand
             ${CUDNN_LIBRARY_PATH}
-            ${CUDA_PATH}/lib64/libcudart.so
-            ${CUDA_PATH}/lib64/stubs/libcuda.so
-            ${CUDA_PATH}/lib64/libcusolver.so
-            ${CUDA_PATH}/lib64/libcufft.so)
+            CUDA::cudart
+            CUDA::cuda_driver
+            CUDA::cusolver
+            CUDA::cufft)
 endif()

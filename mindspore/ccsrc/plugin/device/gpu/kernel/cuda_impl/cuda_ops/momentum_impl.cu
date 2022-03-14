@@ -15,7 +15,7 @@
  */
 
 #include "momentum_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T, typename S, typename G>
 __global__ void MomentumUpdateVariableKernel(const size_t size, T *variable, T *accumulation, const S *learning_rate,
                                              const G *gradient, const S *momentum, bool use_nesterov) {

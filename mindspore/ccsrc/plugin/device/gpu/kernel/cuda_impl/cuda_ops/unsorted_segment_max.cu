@@ -16,7 +16,7 @@
 
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/unsorted_segment_max.cuh"
 #include <limits>
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T, typename S>
 __global__ void UnsortedSegmentMax(const T *input, const S *segment_ids, const int64_t num_segments, size_t outer_size,

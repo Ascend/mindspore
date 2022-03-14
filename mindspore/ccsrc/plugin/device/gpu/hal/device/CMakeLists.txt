@@ -28,8 +28,11 @@ if(ENABLE_GPU)
     # gpu_queue
     list(REMOVE_ITEM CUDA_SRC_LIST ${GPU_QUEUE_SRCS})
     set_property(SOURCE ${GPU_QUEUE_SRCS} PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_DEVICE)
-    add_library(gpu_queue SHARED ${GPU_QUEUE_SRCS})
-    target_link_libraries(gpu_queue ${CMAKE_THREAD_LIBS_INIT} ${CUDA_PATH}/lib64/libcudart.so)
+    add_library(gpu_queue_obj OBJECT ${GPU_QUEUE_SRCS})
+    target_link_libraries(gpu_queue_obj PUBLIC mindspore::pybind11_module $<$<BOOL:${USE_GLOG}>:mindspore::glog>
+                                               CUDA::cudart CUDA::curand)
+    add_library(gpu_queue SHARED $<TARGET_OBJECTS:gpu_queue_obj>)
+    target_link_libraries(gpu_queue PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 
     list(REMOVE_ITEM CUDA_SRC_LIST "mpi/mpi_initializer.cc" ${GPU_COLLECTIVE_SRCS})
 
@@ -39,13 +42,24 @@ if(ENABLE_GPU)
         set_property(SOURCE ${GPU_COLLECTIVE_SRCS}
             PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_DEVICE)
         add_library(gpu_collective SHARED ${GPU_COLLECTIVE_SRCS})
-        target_link_libraries(gpu_collective PRIVATE mindspore::ompi mindspore::nccl)
-        target_link_libraries(_ms_mpi PRIVATE gpu_collective)
+        target_link_libraries(gpu_collective PRIVATE mindspore::ompi mindspore::pybind11_module mindspore::nccl
+                                                     CUDA::cudart)
+        target_link_libraries(_ms_mpi PRIVATE gpu_collective CUDA::cudart)
     endif()
 
-    # add_library(_mindspore_device_cuda_obj OBJECT ${CUDA_SRC_LIST})
+    if(NOT TENSORRT_HOME_INCLUDE)
+      list(REMOVE_ITEM CUDA_SRC_LIST trt_loader.cc)
+    endif()
+
+    add_library(_mindspore_device_cuda_obj OBJECT ${CUDA_SRC_LIST})
+    target_link_libraries(_mindspore_device_cuda_obj PUBLIC $<$<BOOL:${USE_GLOG}>:mindspore::glog> mindspore::json
+                                                            mindspore::pybind11_module mindspore::grpc++
+                                                            CUDA::cudart CUDA::cupti)
 endif()
 
 set_property(SOURCE ${DEVICE_SRC_LIST} PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_DEVICE)
 add_library(_mindspore_plugin_device_gpu_hal_device_obj OBJECT ${DEVICE_SRC_LIST})
-
+target_link_libraries(_mindspore_plugin_device_gpu_hal_device_obj PUBLIC mindspore::json
+                                                                         mindspore::pybind11_module
+                                                                         mindspore::protobuf
+                                                                         $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

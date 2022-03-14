@@ -21,7 +21,7 @@
 #include <numeric>
 #include <functional>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/slice_copy_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 namespace {
 constexpr size_t kMaxDim = 8;

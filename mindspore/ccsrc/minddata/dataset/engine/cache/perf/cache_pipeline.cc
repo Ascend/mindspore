@@ -23,11 +23,15 @@ namespace ds = mindspore::dataset;
 
 int main(int argc, char **argv) {
 #ifdef USE_GLOG
+#ifdef MS_PATCHED_GLOG_NAME
 #define google mindspore_private
+#endif  // MS_PATCHED_GLOG_NAME
   FLAGS_logtostderr = false;
   FLAGS_log_dir = "/tmp";
   google::InitGoogleLogging(argv[0]);
+#ifdef MS_PATCHED_GLOG_NAME
 #undef google
+#endif  // MS_PATCHED_GLOG_NAME
 #endif
   ds::CachePipelineRun cachePipelineRun;
   if (cachePipelineRun.ProcessArgs(argc, argv) == 0) {

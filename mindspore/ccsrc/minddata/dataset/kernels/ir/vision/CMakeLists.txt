@@ -70,3 +70,8 @@ if(ENABLE_ACL)
 endif()
 
 add_library(kernels-ir-vision OBJECT ${DATASET_KERNELS_IR_VISION_SRC_FILES})
+target_link_libraries(kernels-ir-vision PUBLIC core_headers mindspore::protobuf mindspore::json
+                                               mindspore::pybind11_module mindspore::jpeg_turbo)
+if(USE_GLOG)
+     target_link_libraries(kernels-ir-vision PUBLIC mindspore::glog)
+endif()

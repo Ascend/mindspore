@@ -15,7 +15,7 @@
  */
 
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/clip_grad_norm_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 // The implement of ScalingGradOp
 template <typename T>

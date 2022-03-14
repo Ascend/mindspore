@@ -15,7 +15,7 @@
  */
 
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/check_valid_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T, typename S>
 __global__ void CheckValidKernel(const size_t size, const T *box, const T *img_metas, S *valid) {

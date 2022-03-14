@@ -15,7 +15,7 @@
  */
 
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/random_categorical.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename S>
 __global__ void RandomCategorical(const size_t num_samples, double** dev_rand, double** dev_cdf,

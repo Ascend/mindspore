@@ -15,7 +15,7 @@
  */
 
 #include "smooth_l1_loss_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __global__ void SmoothL1LossKernel(const int input_size, const float beta, const T *prediction, const T *target,

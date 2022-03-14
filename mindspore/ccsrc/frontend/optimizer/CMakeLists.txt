@@ -7,3 +7,6 @@ endif()
 set_property(SOURCE ${_OPTIMIZER_SRC_FILES} PROPERTY COMPILE_DEFINITIONS
   SUBMODULE_ID=mindspore::SubModuleId::SM_OPTIMIZER)
 add_library(_mindspore_frontend_optimizer_obj OBJECT ${_OPTIMIZER_SRC_FILES})
+target_link_libraries(_mindspore_frontend_optimizer_obj PRIVATE mindspore::protobuf mindspore::grpc++
+                                                                mindspore::pybind11_module mindspore::json
+                                                                $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

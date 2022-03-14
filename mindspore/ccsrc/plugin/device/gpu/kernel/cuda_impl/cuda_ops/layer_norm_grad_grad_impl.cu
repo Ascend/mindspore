@@ -19,7 +19,7 @@
 #include <cuda_runtime.h>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/layer_norm_grad_grad_impl.cuh"
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/layer_norm_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 constexpr int THREAD_PER_BLOCK = 256;
 constexpr int NUM_PER_THREAD_REDUCE = 4;

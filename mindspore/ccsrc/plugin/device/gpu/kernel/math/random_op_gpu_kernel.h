@@ -25,7 +25,7 @@
 #include "plugin/device/gpu/kernel/gpu_kernel.h"
 #include "plugin/device/gpu/kernel/gpu_kernel_factory.h"
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/random_op_impl.cuh"
-#include "include/curand.h"
+#include "curand.h"
 #include "utils/ms_context.h"
 
 namespace mindspore {

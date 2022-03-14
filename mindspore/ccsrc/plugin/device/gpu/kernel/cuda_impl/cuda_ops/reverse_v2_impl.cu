@@ -15,7 +15,7 @@
  */
 #include <cuda_runtime.h>
 #include "reverse_v2_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T>
 __global__ void ReverseV2(const T* input, T* output, const size_t* input_shape, const int64_t* strides,
                           const int64_t* axis, size_t input_size, size_t axis_size) {

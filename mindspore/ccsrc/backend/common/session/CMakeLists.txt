@@ -40,3 +40,8 @@ endif()
 
 set_property(SOURCE ${_SESSION_SRC_LIST} PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_SESSION)
 add_library(_mindspore_backend_common_session_obj OBJECT ${_SESSION_SRC_LIST})
+target_link_libraries(_mindspore_backend_common_session_obj PUBLIC mindspore::protobuf mindspore::grpc++
+                                                                   mindspore::json mindspore::pybind11_module
+                                                                   $<$<BOOL:${USE_GLOG}>:mindspore::glog>
+                                                                   $<$<BOOL:${ENABLE_GPU}>:CUDA::cudart>
+                                                                   $<$<BOOL:${ENABLE_GPU}>:CUDA::cupti>)

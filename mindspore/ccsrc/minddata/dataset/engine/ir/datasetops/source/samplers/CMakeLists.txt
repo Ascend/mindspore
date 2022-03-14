@@ -15,3 +15,6 @@ set(DATASET_ENGINE_IR_DATASETOPS_SOURCE_SAMPLERS_SRC_FILES
         )
 
 add_library(engine-ir-datasetops-source-samplers OBJECT ${DATASET_ENGINE_IR_DATASETOPS_SOURCE_SAMPLERS_SRC_FILES})
+target_link_libraries(engine-ir-datasetops-source-samplers PUBLIC core_headers mindspore::protobuf mindspore::json
+                                                                  mindspore::pybind11_module
+                                                                  $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

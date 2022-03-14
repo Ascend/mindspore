@@ -28,3 +28,8 @@ set(DATASET_ENGINE_IR_DATASETOPS_SRC_FILES
         )
 
 add_library(engine-ir-datasetops OBJECT ${DATASET_ENGINE_IR_DATASETOPS_SRC_FILES})
+target_link_libraries(engine-ir-datasetops PUBLIC core_headers mindspore::protobuf mindspore::grpc++
+                                                  mindspore::flatbuffers mindspore::json mindspore::pybind11_module
+                                                  $<$<BOOL:${USE_GLOG}>:mindspore::glog>
+                                                  $<$<BOOL:${ENABLE_MINDDATA}>:mindspore::sentencepiece>
+                                                  $<$<BOOL:${ENABLE_GPU}>:CUDA::cudart>)

@@ -17,7 +17,7 @@
 #include <vector>
 #include <iostream>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/cast_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 // Generic cast
 template <typename S, typename T>

@@ -18,7 +18,7 @@
 #include <stdint.h>
 #include <cuda_runtime.h>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/split_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T>
 __global__ void Split(const size_t size, const int axis_step, const int all_size_before_axis,
                       const int all_size_axis, const T* input, T** outputs) {

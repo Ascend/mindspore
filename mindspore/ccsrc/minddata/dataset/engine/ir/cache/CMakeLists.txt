@@ -4,3 +4,6 @@ add_library(engine-ir-cache OBJECT
         pre_built_dataset_cache.cc
         dataset_cache_impl.cc
         dataset_cache.cc)
+target_link_libraries(engine-ir-cache PUBLIC core_headers mindspore::protobuf mindspore::flatbuffers mindspore::grpc++
+                                             mindspore::json mindspore::pybind11_module
+                                             $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

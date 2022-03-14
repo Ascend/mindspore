@@ -70,3 +70,7 @@ if(ENABLE_PYTHON)
 endif()
 
 add_library(engine-ir-datasetops-source OBJECT ${DATASET_ENGINE_IR_DATASETOPS_SOURCE_SRC_FILES})
+target_link_libraries(engine-ir-datasetops-source PUBLIC core_headers mindspore::protobuf mindspore::flatbuffers
+                                                         mindspore::grpc++ mindspore::json mindspore::pybind11_module
+                                                         mindspore::jpeg_turbo mindspore::tinyxml2
+                                                         $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

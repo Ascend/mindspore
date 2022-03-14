@@ -15,7 +15,7 @@
  */
 
 #include "unary_op_grad_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 template <typename T>
 __global__ void SqrtGradKernel(const T *input, const T *dout, T *output, const size_t count) {

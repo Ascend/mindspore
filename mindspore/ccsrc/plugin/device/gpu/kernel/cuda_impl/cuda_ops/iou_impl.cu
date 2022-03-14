@@ -15,7 +15,7 @@
  */
 
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/iou_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 __device__ float CoordinateMax(const float a, const float b) {
   return (a > b ? a : b);

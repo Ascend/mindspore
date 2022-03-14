@@ -21,7 +21,7 @@
 #include <utility>
 #include <algorithm>
 #include "transpose_impl_opt.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 // Optimize nchw2nhwc && nhwc2nchw with tiling and shared memory.
 // Firstly, combined 2 dims hw together, treat input and output as 3D tensor.

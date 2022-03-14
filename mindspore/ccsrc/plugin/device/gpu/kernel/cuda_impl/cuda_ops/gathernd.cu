@@ -15,7 +15,7 @@
  */
 
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/gathernd.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T, typename S>
 __global__ void GatherNdKernel(T *input, S *indices, T *output, const size_t output_dim0, const size_t output_dim1,
                                const size_t indices_dim1, S *batch_indices, S *batch_strides) {

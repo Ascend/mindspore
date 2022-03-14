@@ -13,11 +13,21 @@ if(ENABLE_MPI AND ENABLE_CPU)
     set_property(SOURCE ${MPI_SRC_LIST}
         PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_DEVICE)
     add_library(mpi_adapter SHARED ${MPI_SRC_LIST})
-    target_link_libraries(mpi_adapter PRIVATE mindspore::ompi mindspore::pybind11_module -ldl ${SECUREC_LIBRARY})
+    target_link_libraries(mpi_adapter PRIVATE mindspore::ompi
+                                              mindspore::pybind11_module
+                                              -ldl ${SECUREC_LIBRARY}
+                                              $<$<BOOL:${USE_GLOG}>:mindspore::glog>)
 endif()
 
 set_property(SOURCE ${DEVICE_SRC_LIST}}
     PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_DEVICE)
 if(ENABLE_CPU)
     add_library(_mindspore_plugin_device_cpu_hal_device_obj OBJECT ${DEVICE_SRC_LIST})
+    target_link_libraries(_mindspore_plugin_device_cpu_hal_device_obj PUBLIC mindspore::protobuf
+                                                                             mindspore::grpc++
+                                                                             mindspore::pybind11_module
+                                                                             mindspore::json
+                                                                             $<$<BOOL:${USE_GLOG}>:mindspore::glog>
+                                                                             $<$<BOOL:${ENABLE_GPU}>:CUDA::cuda_driver>
+                                                                             $<$<BOOL:${ENABLE_GPU}>:CUDA::cupti>)
 endif()

@@ -35,7 +35,9 @@ int main(int argc, char **argv) {
   }
 
 #ifdef USE_GLOG
+#ifdef MS_PATCHED_GLOG_NAME
 #define google mindspore_private
+#endif  // MS_PATCHED_GLOG_NAME
   FLAGS_logtostderr = false;
   FLAGS_log_dir = ds::DefaultLogDir();
   // Create default log dir
@@ -46,7 +48,9 @@ int main(int argc, char **argv) {
     return 1;
   }
   google::InitGoogleLogging(argv[0]);
+#ifdef MS_PATCHED_GLOG_NAME
 #undef google
+#endif  // MS_PATCHED_GLOG_NAME
 #endif
 
   if (argc == 1) {

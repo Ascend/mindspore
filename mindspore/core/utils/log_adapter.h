@@ -30,9 +30,13 @@
 #include "./securec.h"
 #ifdef USE_GLOG
 #define GLOG_NO_ABBREVIATED_SEVERITIES
+#ifdef MS_PATCHED_GLOG_NAME
 #define google mindspore_private
+#endif
 #include "glog/logging.h"
+#ifdef MS_PATCHED_GLOG_NAME
 #undef google
+#endif
 #else
 #include "toolchain/slog.h"
 #endif

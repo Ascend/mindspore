@@ -15,7 +15,7 @@
  */
 
 #include <cuda_runtime.h>
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 #include "transpose_impl.cuh"
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/complex.h"
 

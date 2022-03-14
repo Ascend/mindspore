@@ -12,3 +12,5 @@ else()
           callback_manager.cc
           )
 endif()
+target_link_libraries(callback PUBLIC core_headers mindspore::protobuf mindspore::json
+                                      mindspore::pybind11_module $<$<BOOL:${USE_GLOG}>:mindspore::glog>)

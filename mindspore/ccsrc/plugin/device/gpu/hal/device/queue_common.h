@@ -22,7 +22,7 @@
 #include <algorithm>
 #include <map>
 #include "utils/log_adapter.h"
-#include "include/curand.h"
+#include "curand.h"
 
 namespace mindspore {
 namespace device {

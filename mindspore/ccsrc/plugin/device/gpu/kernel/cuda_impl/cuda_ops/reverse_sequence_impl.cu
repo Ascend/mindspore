@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "plugin/device/gpu/kernel/cuda_impl/cuda_ops/reverse_sequence_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 
 // Util function to convert a 1D input array index to an N-D positional index
 // Required since GPU iterates over all values in an ND array as a 1D array

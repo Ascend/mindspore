@@ -15,7 +15,7 @@
  */
 
 #include "one_hot_impl.cuh"
-#include "include/cuda_fp16.h"
+#include "cuda_fp16.h"
 template <typename T, typename S>
 __global__ void OneHotKernel(size_t size, const S *indices, size_t depth, const T *on_value, const T *off_value,
                              size_t left_dim_size, size_t right_dim_size, T *output) {

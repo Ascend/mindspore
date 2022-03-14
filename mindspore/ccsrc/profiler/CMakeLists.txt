@@ -20,6 +20,16 @@ if(NOT ENABLE_SECURITY)
     set_property(SOURCE ${PROFILER_SRC_LIST} PROPERTY COMPILE_DEFINITIONS
       SUBMODULE_ID=mindspore::SubModuleId::SM_PROFILER)
     add_library(_mindspore_profiler_obj OBJECT ${PROFILER_SRC_LIST})
+    target_link_libraries(_mindspore_profiler_obj PUBLIC mindspore::json mindspore::pybind11_module)
+
+    if(ENABLE_GPU)
+      target_link_libraries(_mindspore_profiler_obj PUBLIC CUDA::cuda_driver
+                                                           CUDA::cupti)
+    endif()
+
+    if(USE_GLOG)
+        target_link_libraries(_mindspore_profiler_obj PUBLIC mindspore::glog)
+    endif()
 
     if(ENABLE_D)
         add_dependencies(_mindspore_profiler_obj mindspore::protobuf)
