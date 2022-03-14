@@ -34,7 +34,9 @@ endif()
 if(NOT CMAKE_SYSTEM_NAME MATCHES "Darwin")
     link_directories(${CMAKE_SOURCE_DIR}/build/mindspore/graphengine)
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 \
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
         -Wno-delete-non-abstract-non-virtual-dtor -Wno-unused-private-field -Wno-overloaded-virtual \
         -Wno-unused-const-variable -Wno-pessimizing-move -Wno-range-loop-analysis -Wno-mismatched-tags \
         -Wno-c++11-narrowing")
@@ -136,15 +138,9 @@ if(ENABLE_GPU)
         list(APPEND GPU_SRC_LIST ${CMAKE_CURRENT_SOURCE_DIR}/plugin/device/gpu/hal/device/trt_loader.cc)
     endif()
 
-    set(NVCC_TMP_CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-    if(${CUDA_VERSION} VERSION_LESS 11.0)
-        string(REPLACE "-std=c++17" "-std=c++11" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-    else()
-        string(REPLACE "-std=c++17" "-std=c++14" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-    endif()
-    set_property(SOURCE ${GPU_SRC_LIST} PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_DEVICE)
-    cuda_add_library(gpu_cuda_lib STATIC ${GPU_SRC_LIST})
-    set(CMAKE_CXX_FLAGS ${NVCC_TMP_CMAKE_CXX_FLAGS})
+    set_source_files_properties(${GPU_SRC_LIST} PROPERTIES COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_DEVICE
+                                                           LANGUAGE CUDA)
+    add_library(gpu_cuda_lib STATIC ${GPU_SRC_LIST})
     add_compile_definitions(ENABLE_GPU)
 
     add_subdirectory(plugin/device/gpu/kernel/cuda_impl/cuda_ops)

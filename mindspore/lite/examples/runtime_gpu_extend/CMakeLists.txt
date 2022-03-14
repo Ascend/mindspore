@@ -11,7 +11,8 @@ add_definitions(-DCL_TARGET_OPENCL_VERSION=200)
 add_definitions(-DCL_HPP_TARGET_OPENCL_VERSION=120)
 add_definitions(-DCL_HPP_MINIMUM_OPENCL_VERSION=120)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../../../cmake/utils.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../../../cmake/external_libs/opencl.cmake)

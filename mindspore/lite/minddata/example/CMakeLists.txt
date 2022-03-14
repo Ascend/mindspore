@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.14.1)
 project(testlenet)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall -fPIC -std=c++17")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-sign-compare")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall -Wno-sign-compare")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
 set(MS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/mindspore-lite-1.5.0-linux-x64/runtime")
 set(LITECV_DIR "${CMAKE_CURRENT_SOURCE_DIR}/mindspore-lite-1.5.0-linux-x64/runtime/include/dataset")

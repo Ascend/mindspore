@@ -1,4 +1,5 @@
 set(protobuf_arm_USE_STATIC_LIBS ON)
+set(_cmake_args)
 if(BUILD_LITE)
     if(MSVC)
         set(protobuf_arm_CXXFLAGS "${CMAKE_CXX_FLAGS}")
@@ -6,24 +7,26 @@ if(BUILD_LITE)
         set(protobuf_arm_LDFLAGS "${CMAKE_SHARED_LINKER_FLAGS}")
         set(_ms_tmp_CMAKE_STATIC_LIBRARY_PREFIX ${CMAKE_STATIC_LIBRARY_PREFIX})
         set(CMAKE_STATIC_LIBRARY_PREFIX "lib")
-    else()
+      else()
+        list(APPEND _cmake_args -DCMAKE_CXX_VISIBILITY_PRESET=hidden -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE)
         set(protobuf_arm_CXXFLAGS "-fstack-protector-all -Wno-maybe-uninitialized -Wno-unused-parameter \
-            -fPIC -fvisibility=hidden -D_FORTIFY_SOURCE=2 -O2")
+            -D_FORTIFY_SOURCE=2 -O2")
         if(NOT ENABLE_GLIBCXX)
             set(protobuf_arm_CXXFLAGS "${protobuf_arm_CXXFLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
         endif()
         set(protobuf_arm_LDFLAGS "-Wl,-z,relro,-z,now,-z,noexecstack")
     endif()
 else()
+    list(APPEND _cmake_args -DCMAKE_CXX_VISIBILITY_PRESET=hidden -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE)
     if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-        set(protobuf_arm_CXXFLAGS "-fstack-protector-all -Wno-uninitialized -Wno-unused-parameter -fPIC \
-            -fvisibility=hidden -D_FORTIFY_SOURCE=2 -O2")
+        set(protobuf_arm_CXXFLAGS "-fstack-protector-all -Wno-uninitialized -Wno-unused-parameter \
+            -D_FORTIFY_SOURCE=2 -O2")
     elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
         set(protobuf_arm_CXXFLAGS "-fstack-protector-all -Wno-maybe-uninitialized -Wno-unused-parameter \
-            -fPIC -fvisibility=hidden -D_FORTIFY_SOURCE=2 -O2")
+            -D_FORTIFY_SOURCE=2 -O2")
     else()
         set(protobuf_arm_CXXFLAGS "-fstack-protector-all -Wno-maybe-uninitialized -Wno-unused-parameter \
-            -fPIC -fvisibility=hidden -D_FORTIFY_SOURCE=2 -O2")
+            -D_FORTIFY_SOURCE=2 -O2")
         if(NOT ENABLE_GLIBCXX)
             set(protobuf_arm_CXXFLAGS "${protobuf_arm_CXXFLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
         endif()
@@ -51,6 +54,7 @@ mindspore_add_pkg(protobuf_arm
         MD5 ${MD5}
         CMAKE_PATH cmake/
         CMAKE_OPTION
+        ${_cmake_args}
         -Dprotobuf_BUILD_TESTS=OFF
         -Dprotobuf_BUILD_SHARED_LIBS=OFF
         -DCMAKE_BUILD_TYPE=Release

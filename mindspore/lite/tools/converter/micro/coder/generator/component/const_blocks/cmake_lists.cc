@@ -49,7 +49,8 @@ if(PLATFORM_ARM32)
 endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_ENABLE_C99} ${CMAKE_C_FLAGS}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     message(STATUS "build benchmark with debug info")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDebug -g")
@@ -57,10 +58,14 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=default")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=default")
 else()
+    include(CheckPIESupported)
+    check_pie_supported()
+    set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+
     message(STATUS "build benchmark release version")
-    set(CMAKE_C_FLAGS "-fPIC -fPIE -D_FORTIFY_SOURCE=2 -O3 -Wall -Werror -fstack-protector-strong -Wno-attributes \
+    set(CMAKE_C_FLAGS "-D_FORTIFY_SOURCE=2 -O3 -Wall -Werror -fstack-protector-strong -Wno-attributes \
     -Wno-deprecated-declarations -Wno-missing-braces ${CMAKE_C_FLAGS}")
-    set(CMAKE_CXX_FLAGS "-fPIC -fPIE -D_FORTIFY_SOURCE=2 -O3 -Wall -Werror -fstack-protector-strong -Wno-attributes \
+    set(CMAKE_CXX_FLAGS "-D_FORTIFY_SOURCE=2 -O3 -Wall -Werror -fstack-protector-strong -Wno-attributes \
     -Wno-deprecated-declarations -Wno-missing-braces -Wno-overloaded-virtual ${CMAKE_CXX_FLAGS}")
     string(REPLACE "-g" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
     string(REPLACE "-g" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
@@ -132,7 +137,8 @@ if(PLATFORM_ARM32)
 endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_ENABLE_C99} ${CMAKE_C_FLAGS}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     message(STATUS "build net library with debug info")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDebug -g")
@@ -140,10 +146,13 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=default")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=default")
 else()
+    include(CheckPIESupported)
+    check_pie_supported()
+    set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
     message(STATUS "build net library release version")
-    set(CMAKE_C_FLAGS "-fPIC -fPIE -D_FORTIFY_SOURCE=2 -O3 -Wall -Werror -fstack-protector-strong -Wno-attributes \
+    set(CMAKE_C_FLAGS "-D_FORTIFY_SOURCE=2 -O3 -Wall -Werror -fstack-protector-strong -Wno-attributes \
     -Wno-deprecated-declarations -Wno-missing-braces ${CMAKE_C_FLAGS}")
-    set(CMAKE_CXX_FLAGS "-fPIC -fPIE -D_FORTIFY_SOURCE=2 -O3 -Wall -Werror -fstack-protector-strong -Wno-attributes \
+    set(CMAKE_CXX_FLAGS "-D_FORTIFY_SOURCE=2 -O3 -Wall -Werror -fstack-protector-strong -Wno-attributes \
     -Wno-deprecated-declarations -Wno-missing-braces -Wno-overloaded-virtual ${CMAKE_CXX_FLAGS}")
     string(REPLACE "-g" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
     string(REPLACE "-g" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")

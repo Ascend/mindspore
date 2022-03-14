@@ -68,7 +68,7 @@ set_property(SOURCE ${_DEBUG_SRC_LIST} ${_RDR_SRC_LIST} PROPERTY COMPILE_DEFINIT
 add_library(_mindspore_debug_obj OBJECT ${_DEBUG_SRC_LIST} ${_RDR_SRC_LIST})
 if(ENABLE_DEBUGGER)
     if(NOT CMAKE_SYSTEM_NAME MATCHES "Windows")
-        add_compile_options(-Wall -DOFFLINE_DBG_MODE -fPIC -O2)
+        add_compile_options(-Wall -DOFFLINE_DBG_MODE -O2)
         set_property(SOURCE ${_OFFLINE_SRC_LIST} PROPERTY COMPILE_DEFINITIONS
             SUBMODULE_ID=mindspore::SubModuleId::SM_OFFLINE_DEBUG)
         add_library(_mindspore_offline_debug SHARED ${_OFFLINE_SRC_LIST})
