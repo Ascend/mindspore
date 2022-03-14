@@ -81,7 +81,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -g2 -ggdb -fno-inline-functions -f
     -DHALF_ENABLE_CPP11_USER_LITERALS=0 -D_FORTIFY_SOURCE=2 -Wno-cpp")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/include -std=c++17 \
-    -Werror -Wall -Wno-deprecated-declarations -fPIC")
+    -Wall -Wno-deprecated-declarations -fPIC")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(PYBIND11_CPP_STANDARD -std=c++17)
